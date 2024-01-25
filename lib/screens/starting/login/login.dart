@@ -89,6 +89,7 @@ class _LoginScreenState extends State<LoginScreen>
                       color: AppBlackTheme.background,
                     ),
                     child: PageView(
+                      
                       children: [
                         Container(
                           child: connectionResults
@@ -114,14 +115,12 @@ class _LoginScreenState extends State<LoginScreen>
                                                 children: [
                                                   AppText(
                                                     text: 'E-Mail Adresiniz',
-                                                    color: Colors.white,
                                                     size: 16,
                                                   ),
                                                   CustomTextfield(
                                                     hintText:
                                                         'E-mail Adresiniz',
-                                                    color:
-                                                        AppBlackTheme.textColor,
+                                                    color: AppTheme.textColor,
                                                     onChange: (news) {
                                                       setState(() {
                                                         mail = news;
@@ -139,7 +138,6 @@ class _LoginScreenState extends State<LoginScreen>
                                                 children: [
                                                   AppText(
                                                     text: 'Şifreniz',
-                                                    color: Colors.white,
                                                     size: 16,
                                                   ),
                                                   Row(
@@ -150,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                               securePassword,
                                                           hintText: 'Şifreniz',
                                                           isLast: true,
-                                                          color: AppBlackTheme
+                                                          color: AppTheme
                                                               .textColor,
                                                           onChange: (news) {
                                                             setState(() {

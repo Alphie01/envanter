@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:envanterimservetim/core/classes/notifications.dart';
 import 'package:envanterimservetim/core/classes/product.dart';
 import 'package:envanterimservetim/core/classes/user.dart';
 import 'package:envanterimservetim/core/httpRequests/http.dart';
@@ -85,7 +86,7 @@ class Shop {
       'user_id': User.userProfile!.userId
     };
     Map returns = await HTTP_Requests.sendPostRequest(data);
-    print('shop initied');
+    print(returns);
 
     if (returns['id'] == 0) {
       clearShopDatas();
@@ -99,6 +100,10 @@ class Shop {
       if (returns['categories'] != []) {
         Categories.initShopCategories(returns['categories']);
       }
+      if (returns['notification'] != []) {
+        Notifications.initilazeNotifications(returns['notification']);
+      }
+
       return true;
     } else {
       return false;
@@ -165,6 +170,7 @@ class Shop {
   static void clearShopDatas() {
     Product.clearShopProduct();
     Categories.clearCategories();
+    Notifications.notificationClear();
   }
 
   static int _returnWorkerIndex(User user) {

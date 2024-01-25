@@ -185,7 +185,6 @@ class _DrawersState extends State<Drawers> {
             /* SharedPref.removeStrValue(isShownWelcomeInfos); */
             SharedPref.removeStrValue(userToken);
             widget.updatePage(pageId: 90);
-            User.logout();
           },
         ),
       ],

@@ -1,5 +1,6 @@
 import 'package:envanterimservetim/core/classes/product.dart';
 import 'package:envanterimservetim/core/constants/sizeconfig.dart';
+import 'package:envanterimservetim/core/constants/theme.dart';
 import 'package:envanterimservetim/screens/homepage/homepage.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
 import 'package:envanterimservetim/widgets/box_view.dart';
@@ -26,15 +27,40 @@ class MostSelers extends StatelessWidget {
               ],
             ),
           ),
-          ListView.builder(
-            shrinkWrap: true,
-            padding: paddingZero,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 4,
-            itemBuilder: (ctx, index) {
-              return Product_Overview(product: Product.products.first);
-            },
-          )
+          Product.products.length == 0
+              ? Container(
+                  decoration: BoxDecoration(
+                      color: AppTheme.background,
+                      borderRadius: BorderRadius.circular(paddingHorizontal)),
+                  height: 250,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      AppLargeText(
+                        text:
+                            'Daha Önceden Ürün Eklemediniz. Görüntülemek için lütfen ürün ekleyin!',
+                        align: TextAlign.center,
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(paddingHorizontal),
+                        decoration: BoxDecoration(
+                            color: AppTheme.contrastColor1,
+                            borderRadius:
+                                BorderRadius.circular(paddingHorizontal)),
+                        child: AppLargeText(text: 'Ürün Ekle'),
+                      )
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  padding: paddingZero,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 4,
+                  itemBuilder: (ctx, index) {
+                    return Product_Overview(product: Product.products.first);
+                  },
+                )
         ],
       ),
     );

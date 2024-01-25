@@ -79,7 +79,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return true;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -255,58 +254,90 @@ class StorageOfCompany extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            width: double.maxFinite,
-            margin: EdgeInsets.symmetric(vertical: paddingHorizontal),
-            child: SalesByType(),
-          ),
-          GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (builder) {
-                  return Container(
-                    padding: EdgeInsets.all(paddingHorizontal),
-                    decoration: BoxDecoration(
-                        color: AppTheme.background,
-                        borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(paddingHorizontal))),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            AppText(text: 'Detaylı Ürün Satış Dağılımın')
-                          ],
-                        )
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                  color: AppTheme.contrastColor1,
-                  borderRadius: BorderRadius.circular(paddingHorizontal)),
-              padding: EdgeInsets.symmetric(
-                  vertical: paddingHorizontal / 2,
-                  horizontal: paddingHorizontal),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AppText(
-                    text: 'Bütün Satış Dağılımlarına Göz At!',
-                    color: AppTheme.white,
+          Product.products.length == 0
+          //TODO init statics
+              ? Container(
+                  decoration: BoxDecoration(
+                      color: AppTheme.background,
+                      borderRadius: BorderRadius.circular(paddingHorizontal)),
+                  height: 250,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      AppLargeText(
+                        text:
+                            'Daha Önceden Ürün Eklemediniz. Görüntülemek için lütfen ürün ekleyin!',
+                        align: TextAlign.center,
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(paddingHorizontal),
+                        decoration: BoxDecoration(
+                            color: AppTheme.contrastColor1,
+                            borderRadius:
+                                BorderRadius.circular(paddingHorizontal)),
+                        child: AppLargeText(text: 'Ürün Ekle'),
+                      )
+                    ],
                   ),
-                  FaIcon(
-                    FontAwesomeIcons.search,
-                    size: 16,
-                    color: AppTheme.white,
-                  )
-                ],
-              ),
-            ),
-          )
+                )
+              : Column(
+                  children: [
+                    Container(
+                      width: double.maxFinite,
+                      margin: EdgeInsets.symmetric(vertical: paddingHorizontal),
+                      child: SalesByType(),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (builder) {
+                            return Container(
+                              padding: EdgeInsets.all(paddingHorizontal),
+                              decoration: BoxDecoration(
+                                  color: AppTheme.background,
+                                  borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(paddingHorizontal))),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      AppText(
+                                          text: 'Detaylı Ürün Satış Dağılımın')
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: AppTheme.contrastColor1,
+                            borderRadius:
+                                BorderRadius.circular(paddingHorizontal)),
+                        padding: EdgeInsets.symmetric(
+                            vertical: paddingHorizontal / 2,
+                            horizontal: paddingHorizontal),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            AppText(
+                              text: 'Bütün Satış Dağılımlarına Göz At!',
+                              color: AppTheme.white,
+                            ),
+                            FaIcon(
+                              FontAwesomeIcons.search,
+                              size: 16,
+                              color: AppTheme.white,
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
         ],
       ),
     );

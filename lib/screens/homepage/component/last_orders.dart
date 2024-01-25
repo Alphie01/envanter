@@ -28,18 +28,44 @@ class LastOrders extends StatelessWidget {
               children: [AppLargeText(text: 'Son Siparişler')],
             ),
           ),
-          ListView.builder(
-            shrinkWrap: true,
-            padding: paddingZero,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 4,
-            itemBuilder: (ctx, index) {
-              return Product_Overview(
-                //TODO Products init Statistic
-                product: Product.products.first,
-              );
-            },
-          )
+          Product.products.length == 0
+              //TODO init Last Orders
+              ? Container(
+                  decoration: BoxDecoration(
+                      color: AppTheme.background,
+                      borderRadius: BorderRadius.circular(paddingHorizontal)),
+                  height: 250,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      AppLargeText(
+                        text:
+                            'Daha Önceden Ürün Eklemediniz. Görüntülemek için lütfen ürün ekleyin!',
+                        align: TextAlign.center,
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(paddingHorizontal),
+                        decoration: BoxDecoration(
+                            color: AppTheme.contrastColor1,
+                            borderRadius:
+                                BorderRadius.circular(paddingHorizontal)),
+                        child: AppLargeText(text: 'Ürün Ekle'),
+                      )
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  padding: paddingZero,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 4,
+                  itemBuilder: (ctx, index) {
+                    return Product_Overview(
+                      //TODO Products init Statistic
+                      product: Product.products.first,
+                    );
+                  },
+                )
         ],
       ),
     );

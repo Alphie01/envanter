@@ -303,7 +303,7 @@ if (isset($_POST['fetchUserByToken'])) {
 
 
 if (isset($_POST['initShopByToken'])) {
-    $initShop = $db->prepare("SELECT shop_id, shop_products, shop_categories FROM shop where shop_token=:shop_token");
+    $initShop = $db->prepare("SELECT shop_id, shop_products, shop_categories, shop_notifications, shop_sells FROM shop where shop_token=:shop_token");
     $initShop->execute(array(
         'shop_token' => $_POST['shop_token']
     ));
@@ -347,6 +347,8 @@ if (isset($_POST['initShopByToken'])) {
             'categories' => json_decode($initShopCek['shop_categories']),
             'workers' => $workerInfos,
             'waitingApprove' => $waitingWorkerInfos,
+            'notification' => json_decode($initShopCek['shop_notifications']),
+            'shop_sells' => json_decode($initShopCek['shop_sells'])
         );
         print_r(json_encode($returns));
     } else {

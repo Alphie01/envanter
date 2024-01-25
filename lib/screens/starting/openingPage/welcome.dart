@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:envanterimservetim/core/classes/user.dart';
 import 'package:envanterimservetim/core/constants/sizeconfig.dart';
 import 'package:envanterimservetim/core/constants/theme.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
@@ -45,6 +46,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   void initState() {
+    User.logout();
     swipeAnimation = AnimationController(
         duration: Duration(seconds: 8), vsync: this)
       ..addListener(() {
@@ -60,7 +62,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
     swipeAnimation!.forward();
     widget.animationController!.forward();
-
 
     super.initState();
   }

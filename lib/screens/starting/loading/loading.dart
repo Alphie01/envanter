@@ -40,6 +40,7 @@ class _LoadingScreenState extends State<LoadingScreen>
   bool selectShop = false,
       waitFetch = false,
       _isSupportedAuth = false,
+      isLoading = true,
       _authFailed = false;
   LocalAuthentication localAuthentication = LocalAuthentication();
   int initPage = 0;
@@ -120,6 +121,7 @@ class _LoadingScreenState extends State<LoadingScreen>
   Future loginWithToken(String token) async {
     bool dance = await User.fetchUserbyToken(token);
     if (dance) {
+      
       if (Shop.isSelectedShop()) {
         widget.updatePage(pageId: 0);
       } else {
@@ -190,277 +192,296 @@ class _LoadingScreenState extends State<LoadingScreen>
           bottom: getPaddingScreenBottomHeight()),
       color: AppTheme.firstColor,
       child: selectShop
-          ? Shop.attendedShops.isNotEmpty
-              ? Container(
-                  padding: EdgeInsets.all(paddingHorizontal * 2),
-                  alignment: Alignment.center,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(paddingHorizontal * 2),
-                        child: AppText(
-                          text: 'Hangi İşletmeni Kontrol Etmek İstersin?',
-                          color: AppTheme.white,
-                          fontWeight: FontWeight.bold,
-                          size: 14,
-                          align: TextAlign.center,
-                        ),
-                      ),
-                      Expanded(
-                        child: GridView.builder(
-                          padding: paddingZero,
-                          shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: paddingHorizontal,
-                                  mainAxisSpacing: paddingHorizontal),
-                          itemCount: Shop.attendedShops.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedIndex = index;
-                                });
-                              },
-                              child: Stack(
-                                alignment: Alignment.topRight,
-                                children: [
-                                  Container(
-                                    width: double.maxFinite,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Container(
-                                          height: 100,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.white),
-                                          child: NetworkContainer(
-                                            borderRadius:
-                                                BorderRadius.circular(100),
-                                            imageUrl: Shop.attendedShops[index]
-                                                .shop_image,
-                                          ),
-                                        ),
-                                        Container(
-                                          child: AppText(
-                                            text: Shop
-                                                .attendedShops[index].shop_name,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  selectedIndex == index
-                                      ? Container(
-                                          margin: EdgeInsets.all(5),
-                                          padding: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                color: AppTheme.contrastColor1,
-                                              )),
-                                          child: FaIcon(
-                                            FontAwesomeIcons.check,
-                                            size: 14,
-                                            color: AppTheme.contrastColor1,
-                                          ),
-                                        )
-                                      : Container()
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      selectedIndex != null
-                          ? waitFetch
-                              ? Center(
-                                  child: Container(
-                                    height: 50,
-                                    width: 50,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                )
-                              : GestureDetector(
+          ? isLoading
+              ? Shop.attendedShops.isNotEmpty
+                  ? Container(
+                      padding: EdgeInsets.all(paddingHorizontal * 2),
+                      alignment: Alignment.center,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(paddingHorizontal * 2),
+                            child: AppText(
+                              text: 'Hangi İşletmeni Kontrol Etmek İstersin?',
+                              color: AppTheme.white,
+                              fontWeight: FontWeight.bold,
+                              size: 14,
+                              align: TextAlign.center,
+                            ),
+                          ),
+                          Expanded(
+                            child: GridView.builder(
+                              padding: paddingZero,
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: paddingHorizontal,
+                                      mainAxisSpacing: paddingHorizontal),
+                              itemCount: Shop.attendedShops.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return GestureDetector(
                                   onTap: () {
-                                    setSelectedShop();
+                                    setState(() {
+                                      selectedIndex = index;
+                                    });
                                   },
-                                  child: Box_View(
-                                    horizontal: 0,
-                                    boxInside: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        AppText(
-                                          text: 'Devam Et',
-                                          align: TextAlign.center,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppTheme.contrastColor1,
-                                          size: 14,
-                                        ),
-                                        FaIcon(
-                                          FontAwesomeIcons.arrowRight,
-                                          color: AppTheme.contrastColor1,
-                                          size: 14,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                )
-                          : Container(),
-                    ],
-                  ),
-                )
-              : AnimatedBuilder(
-                  animation: _animationController!,
-                  builder: (BuildContext context, Widget? child) {
-                    return Opacity(
-                      opacity: _breathAnimation!.value,
-                      child: Container(
-                        padding: EdgeInsets.all(paddingHorizontal * 2),
-                        alignment: Alignment.center,
-                        child: PageView(
-                          physics: NeverScrollableScrollPhysics(),
-                          controller: pageController!,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Logo(),
-                                Container(
-                                  padding:
-                                      EdgeInsets.all(paddingHorizontal * 2),
-                                  child: AppText(
-                                    text:
-                                        'İşlem yapabileceğiniz bir işletme bulunmamaktadır!',
-                                    color: AppTheme.white,
-                                    fontWeight: FontWeight.bold,
-                                    size: 14,
-                                    align: TextAlign.center,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Column(
+                                  child: Stack(
+                                    alignment: Alignment.topRight,
                                     children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          setCompany(1);
-                                        },
-                                        child: Box_View(
-                                            boxInside: Row(
+                                      Container(
+                                        width: double.maxFinite,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
                                           children: [
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  AppText(
-                                                    text:
-                                                        'Olan Bir İşletmenin Altına Giriş Yap',
-                                                    fontWeight: FontWeight.bold,
-                                                    size: 13,
-                                                  ),
-                                                  AppText(
-                                                      text:
-                                                          'Olan bir işletmenin altına giriş yaparak, o işletmenin altında işlemler yapabilirsiniz.'),
-                                                ],
+                                            Container(
+                                              height: 100,
+                                              width: 100,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.white),
+                                              child: NetworkContainer(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                                imageUrl: Shop
+                                                    .attendedShops[index]
+                                                    .shop_image,
                                               ),
                                             ),
-                                            FaIcon(FontAwesomeIcons.qrcode,
-                                                color: AppTheme.textColor)
-                                          ],
-                                        )),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () => setCompany(2),
-                                        child: Box_View(
-                                            boxInside: Row(
-                                          children: [
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  AppText(
-                                                    text:
-                                                        'Kendi İşletmeni Oluştur!',
-                                                    fontWeight: FontWeight.bold,
-                                                    size: 13,
-                                                  ),
-                                                  AppText(
-                                                      text:
-                                                          'Kendi işletmenin profilini uygulama üzerinden oluşturabilir; İster webden, ister mobilden erişim sağla'),
-                                                ],
+                                            Container(
+                                              child: AppText(
+                                                text: Shop.attendedShops[index]
+                                                    .shop_name,
+                                                color: Colors.black,
                                               ),
                                             ),
-                                            FaIcon(FontAwesomeIcons.plus,
-                                                color: AppTheme.textColor)
                                           ],
-                                        )),
+                                        ),
                                       ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          SharedPref.removeStrValue(userToken);
-                                          widget.updatePage(pageId: 92);
-                                          User.logout();
-                                        },
-                                        child: Box_View(
-                                            boxInside: Row(
-                                          children: [
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  AppText(
-                                                    text: 'Çıkış Yap',
-                                                    fontWeight: FontWeight.bold,
-                                                    size: 13,
-                                                  ),
-                                                ],
+                                      selectedIndex == index
+                                          ? Container(
+                                              margin: EdgeInsets.all(5),
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  border: Border.all(
+                                                    color:
+                                                        AppTheme.contrastColor1,
+                                                  )),
+                                              child: FaIcon(
+                                                FontAwesomeIcons.check,
+                                                size: 14,
+                                                color: AppTheme.contrastColor1,
                                               ),
-                                            ),
-                                            FaIcon(FontAwesomeIcons.x,
-                                                color: AppTheme.textColor)
-                                          ],
-                                        )),
-                                      ),
+                                            )
+                                          : Container()
                                     ],
                                   ),
-                                )
+                                );
+                              },
+                            ),
+                          ),
+                          selectedIndex != null
+                              ? waitFetch
+                                  ? Center(
+                                      child: Container(
+                                        height: 50,
+                                        width: 50,
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    )
+                                  : GestureDetector(
+                                      onTap: () {
+                                        setSelectedShop();
+                                      },
+                                      child: Box_View(
+                                        horizontal: 0,
+                                        boxInside: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            AppText(
+                                              text: 'Devam Et',
+                                              align: TextAlign.center,
+                                              fontWeight: FontWeight.bold,
+                                              color: AppTheme.contrastColor1,
+                                              size: 14,
+                                            ),
+                                            FaIcon(
+                                              FontAwesomeIcons.arrowRight,
+                                              color: AppTheme.contrastColor1,
+                                              size: 14,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                              : Container(),
+                        ],
+                      ),
+                    )
+                  : AnimatedBuilder(
+                      animation: _animationController!,
+                      builder: (BuildContext context, Widget? child) {
+                        return Opacity(
+                          opacity: _breathAnimation!.value,
+                          child: Container(
+                            padding: EdgeInsets.all(paddingHorizontal * 2),
+                            alignment: Alignment.center,
+                            child: PageView(
+                              physics: NeverScrollableScrollPhysics(),
+                              controller: pageController!,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Logo(),
+                                    Container(
+                                      padding:
+                                          EdgeInsets.all(paddingHorizontal * 2),
+                                      child: AppText(
+                                        text:
+                                            'İşlem yapabileceğiniz bir işletme bulunmamaktadır!',
+                                        color: AppTheme.white,
+                                        fontWeight: FontWeight.bold,
+                                        size: 14,
+                                        align: TextAlign.center,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              setCompany(1);
+                                            },
+                                            child: Box_View(
+                                                boxInside: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      AppText(
+                                                        text:
+                                                            'Olan Bir İşletmenin Altına Giriş Yap',
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        size: 13,
+                                                      ),
+                                                      AppText(
+                                                          text:
+                                                              'Olan bir işletmenin altına giriş yaparak, o işletmenin altında işlemler yapabilirsiniz.'),
+                                                    ],
+                                                  ),
+                                                ),
+                                                FaIcon(FontAwesomeIcons.qrcode,
+                                                    color: AppTheme.textColor)
+                                              ],
+                                            )),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () => setCompany(2),
+                                            child: Box_View(
+                                                boxInside: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      AppText(
+                                                        text:
+                                                            'Kendi İşletmeni Oluştur!',
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        size: 13,
+                                                      ),
+                                                      AppText(
+                                                          text:
+                                                              'Kendi işletmenin profilini uygulama üzerinden oluşturabilir; İster webden, ister mobilden erişim sağla'),
+                                                    ],
+                                                  ),
+                                                ),
+                                                FaIcon(FontAwesomeIcons.plus,
+                                                    color: AppTheme.textColor)
+                                              ],
+                                            )),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              SharedPref.removeStrValue(
+                                                  userToken);
+                                              widget.updatePage(pageId: 92);
+                                            },
+                                            child: Box_View(
+                                                boxInside: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      AppText(
+                                                        text: 'Çıkış Yap',
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        size: 13,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                FaIcon(FontAwesomeIcons.x,
+                                                    color: AppTheme.textColor)
+                                              ],
+                                            )),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SelectExistedCompany(
+                                  goBackToFirstPage: () => setCompany(0),
+                                  approved: (String token) {
+                                    setNewSelectedShop(token);
+                                  },
+                                ),
+                                CreateNewCompany(
+                                  goBackToFirstPage: () => setCompany(0),
+                                  endOfCreation: () {
+                                    widget.updatePage(pageId: 0);
+                                  },
+                                ),
                               ],
                             ),
-                            SelectExistedCompany(
-                              goBackToFirstPage: () => setCompany(0),
-                              approved: (String token) {
-                                setNewSelectedShop(token);
-                              },
-                            ),
-                            CreateNewCompany(
-                              goBackToFirstPage: () => setCompany(0),
-                              endOfCreation: () {
-                                widget.updatePage(pageId: 0);
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                          ),
+                        );
+                      },
+                    )
+              : Center(
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  ),
                 )
           : _authFailed
               ? Column(
@@ -521,7 +542,6 @@ class _LoadingScreenState extends State<LoadingScreen>
                             onTap: () {
                               SharedPref.removeStrValue(userToken);
                               widget.updatePage(pageId: 92);
-                              User.logout();
                             },
                             child: Container(
                               padding: EdgeInsets.all(paddingHorizontal),

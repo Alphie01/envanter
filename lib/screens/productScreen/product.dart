@@ -455,49 +455,55 @@ class _SizeOfElementState extends State<SizeOfElement> {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       children: [
-        Container(
-          height: 20,
-          child: ListView.builder(
-            itemCount: widget.productSizeList.length,
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (BuildContext context, int index) {
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedIndex = index;
-                    selectedSizelist = widget.productSizeList[index];
-                  });
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: paddingHorizontal),
-                  decoration: BoxDecoration(
-                      border: selectedIndex == index
-                          ? Border(
-                              bottom:
-                                  BorderSide(color: AppTheme.contrastColor1),
-                            )
-                          : null),
-                  child:
-                      AppText(text: widget.productSizeList[index].nameOfSize!),
+        widget.productSizeList.length == 1
+            ? Container()
+            : Container(
+                height: 20,
+                child: ListView.builder(
+                  itemCount: widget.productSizeList.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedIndex = index;
+                          selectedSizelist = widget.productSizeList[index];
+                        });
+                      },
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: paddingHorizontal),
+                        decoration: BoxDecoration(
+                            border: selectedIndex == index
+                                ? Border(
+                                    bottom: BorderSide(
+                                        color: AppTheme.contrastColor1),
+                                  )
+                                : null),
+                        child: AppText(
+                            text: widget.productSizeList[index].nameOfSize!),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
-        ),
+              ),
         Box_View(
           color: AppTheme.background,
           horizontal: 0,
           boxInside: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: paddingHorizontal / 2),
-                child: AppText(
-                  text: 'Ürünün Boyut İsimi : ${selectedSizelist!.nameOfSize}',
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              widget.productSizeList.length == 1
+                  ? Container()
+                  : Padding(
+                      padding: EdgeInsets.only(bottom: paddingHorizontal / 2),
+                      child: AppText(
+                        text:
+                            'Ürünün Boyut İsimi : ${selectedSizelist!.nameOfSize}',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
               Padding(
                 padding: EdgeInsets.only(bottom: paddingHorizontal / 2),
                 child: AppText(

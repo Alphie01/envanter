@@ -320,6 +320,7 @@ class PageInducator extends StatelessWidget {
             child: AppText(
               text: string,
               fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
         ],

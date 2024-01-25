@@ -3,6 +3,7 @@ import 'package:envanterimservetim/core/constants/sizeconfig.dart';
 import 'package:envanterimservetim/core/constants/theme.dart';
 import 'package:envanterimservetim/widgets/ads/adsOfApp.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
+import 'package:envanterimservetim/widgets/notification__logs.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -104,12 +105,14 @@ class HeaderWidget extends StatelessWidget {
             ),
             Row(
               children: [
-                /* GestureDetector(
+                GestureDetector(
                   onTap: () {
                     showModalBottomSheet(
                       context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
                       builder: (builder) {
-                        return Container();
+                        return Notification_Logs();
                       },
                     );
                   },
@@ -122,23 +125,11 @@ class HeaderWidget extends StatelessWidget {
                           FontAwesomeIcons.envelope,
                           color: AppTheme.textColor,
                         ),
-                        Shop.selectedShop!.shopPermissions
-                                .shop_can_add_teammates
-                            ? Transform.translate(
-                                offset: Offset(12, -12),
-                                child: Container(
-                                  padding: EdgeInsets.all(7.5),
-                                  decoration: BoxDecoration(
-                                      color: AppTheme.alertRed[0],
-                                      shape: BoxShape.circle),
-                                  child: AppText(text: '1'),
-                                ),
-                              )
-                            : Container(),
+                        
                       ],
                     ),
                   ),
-                ), */
+                ),
                 GestureDetector(
                   onTap: () {
                     if (Shop
