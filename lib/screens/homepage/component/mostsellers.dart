@@ -27,7 +27,7 @@ class MostSelers extends StatelessWidget {
               ],
             ),
           ),
-          Product.products.length == 0
+         /*  Product.products.length == 0
               ? Container(
                   decoration: BoxDecoration(
                       color: AppTheme.background,
@@ -61,7 +61,7 @@ class MostSelers extends StatelessWidget {
                     return Product_Overview(product: Product.products.first);
                   },
                 )
-        ],
+ */        ],
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:envanterimservetim/core/classes/shop.dart';
 import 'package:envanterimservetim/core/classes/user.dart';
 import 'package:envanterimservetim/core/constants/sizeconfig.dart';
 import 'package:envanterimservetim/core/constants/theme.dart';
+import 'package:envanterimservetim/screens/starting/loading/components/invited__shops.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
 import 'package:envanterimservetim/widgets/box_view.dart';
 import 'package:flutter/material.dart';
@@ -56,9 +57,11 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                   ? 'Uyarı! İşletmeden ayrılmak mı istiyorsunuz?'
                   : 'Uyarı! İşletmeyi kapatmak mı istiyorsunuz?'),
           content: AppText(
-              text: permission == 0
-                  ? 'Eğer bu işlemi gerçekleştirirseniz, işletmenizden ayrılacak ve bu adım geri alınamaz olacaktır. Bu nedenle, lütfen bu kararı dikkatlice düşünün ve işletmenizle ilgili tüm bilgileri kaydedip yedekleyerek emin olun.'
-                  : 'İşletmenizi kapatmak, tüm faaliyetlerinizi durduracak ve bu işlem geri alınamaz olacaktır. Kapatma işlemi sonrasında, işletmenize ait verilere ve bilgilere erişim kaybolacak, ve bu süreci geri almak mümkün olmayacaktır.', maxLineCount: 10,),
+            text: permission == 0
+                ? 'Eğer bu işlemi gerçekleştirirseniz, işletmenizden ayrılacak ve bu adım geri alınamaz olacaktır. Bu nedenle, lütfen bu kararı dikkatlice düşünün ve işletmenizle ilgili tüm bilgileri kaydedip yedekleyerek emin olun.'
+                : 'İşletmenizi kapatmak, tüm faaliyetlerinizi durduracak ve bu işlem geri alınamaz olacaktır. Kapatma işlemi sonrasında, işletmenize ait verilere ve bilgilere erişim kaybolacak, ve bu süreci geri almak mümkün olmayacaktır.',
+            maxLineCount: 10,
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -70,9 +73,7 @@ class _MainSettingsPageState extends State<MainSettingsPage>
               ),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: _leaveCompany,
               child: AppText(
                 text: 'Ayrılmak İstiyorum!',
                 color: AppTheme.alertRed[0],
@@ -82,6 +83,16 @@ class _MainSettingsPageState extends State<MainSettingsPage>
         );
       },
     );
+  }
+
+  Future _leaveCompany() async {
+    bool answer =
+        await Shop.shop_leaveCompany(token: Shop.selectedShop!.shop_id);
+    print(answer);
+    if (answer) {
+      Navigator.of(context).pop();
+      widget.updatePage!(pageId: 94);
+    } else {}
   }
 
   @override
@@ -170,6 +181,44 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                 ],
                               ),
                             ),
+                            Shop.invitedShops.isNotEmpty
+                                ? GestureDetector(
+                                    onTap: () async {
+                                      await showModalBottomSheet(
+                                        context: context,
+                                        backgroundColor: Colors.transparent,
+                                        isScrollControlled: true,
+                                        builder: (builder) {
+                                          return Invited_Shops();
+                                        },
+                                      );
+                                    },
+                                    child: Box_View(
+                                        boxInside: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              AppText(
+                                                text:
+                                                    '${Shop.invitedShops.length} işletme seni işletmesine davet ediyor!',
+                                                fontWeight: FontWeight.bold,
+                                                size: 13,
+                                              ),
+                                              AppText(
+                                                  text:
+                                                      'Olan bir işletme seni bünyesine katmak istiyor! Hemen gözat!'),
+                                            ],
+                                          ),
+                                        ),
+                                        FaIcon(FontAwesomeIcons.box,
+                                            color: AppTheme.textColor)
+                                      ],
+                                    )),
+                                  )
+                                : Container(),
                             Box_View(
                               boxInside: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,7 +242,9 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                   ),
                                   SettingsButton(
                                     buttonName: 'Profilim',
-                                    buttonOnclick: () {},
+                                    buttonOnclick: () {
+                                      widget.updatePage!(pageId: 31);
+                                    },
                                   ),
                                   SettingsButton(
                                     buttonName: 'Profilimi Düzenle',
@@ -426,46 +477,16 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                 ],
                               ),
                             ),
-                            Box_View(
-                              color: AppTheme.alertYellow[0].withOpacity(.4),
-                              boxInside: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      FaIcon(
-                                        FontAwesomeIcons.share,
-                                        size: 14,
-                                        color: AppTheme.textColor,
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.only(
-                                            left: paddingHorizontal / 2),
-                                        child: AppText(
-                                          text: 'Hesap Değiştir',
-                                          size: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  FaIcon(
-                                    FontAwesomeIcons.angleRight,
-                                    size: 14,
-                                    color: AppTheme.textColor,
-                                  )
-                                ],
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                _showAlertDialogQuitCompany(context,
-                                    Shop.selectedShop!.userPermissionLevel!);
-                              },
-                              child: Shop.selectedShop!.userPermissionLevel == 0
-                                  ? Box_View(
-                                      color:
-                                          AppTheme.alertRed[0].withOpacity(.4),
+                            Shop.attendedShops.isNotEmpty
+                                ? GestureDetector(
+                                    onTap: () {
+                                      if (Shop.attendedShops.isNotEmpty) {
+                                        widget.updatePage!(pageId: 94);
+                                      }
+                                    },
+                                    child: Box_View(
+                                      color: AppTheme.alertYellow[0]
+                                          .withOpacity(.4),
                                       boxInside: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -473,7 +494,7 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                           Row(
                                             children: [
                                               FaIcon(
-                                                FontAwesomeIcons.x,
+                                                FontAwesomeIcons.share,
                                                 size: 14,
                                                 color: AppTheme.textColor,
                                               ),
@@ -482,7 +503,7 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                                     left:
                                                         paddingHorizontal / 2),
                                                 child: AppText(
-                                                  text: 'Kuruluştan Ayrıl',
+                                                  text: 'İşletme Değiştir',
                                                   size: 14,
                                                 ),
                                               ),
@@ -495,8 +516,51 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                           )
                                         ],
                                       ),
+                                    ),
+                                  )
+                                : Container(),
+                            GestureDetector(
+                              onTap: () {
+                                _showAlertDialogQuitCompany(context,
+                                    Shop.selectedShop!.userPermissionLevel!);
+                              },
+                              child: Box_View(
+                                color: AppTheme.alertRed[0].withOpacity(.4),
+                                boxInside: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        FaIcon(
+                                          FontAwesomeIcons.x,
+                                          size: 14,
+                                          color: AppTheme.textColor,
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(
+                                              left: paddingHorizontal / 2),
+                                          child: AppText(
+                                            text: 'Kuruluştan Ayrıl',
+                                            size: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    FaIcon(
+                                      FontAwesomeIcons.angleRight,
+                                      size: 14,
+                                      color: AppTheme.textColor,
                                     )
-                                  : Box_View(
+                                  ],
+                                ),
+                              ),
+                            ),
+                            '${Shop.selectedShop!.shop_owner_Id}' ==
+                                    User.userProfile!.userId
+                                ? GestureDetector(
+                                    onTap: () {},
+                                    child: Box_View(
                                       color:
                                           AppTheme.alertRed[0].withOpacity(.4),
                                       boxInside: Row(
@@ -529,7 +593,8 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                         ],
                                       ),
                                     ),
-                            ),
+                                  )
+                                : Container(),
                             Box_View(
                               color: AppTheme.alertRed[0].withOpacity(.4),
                               boxInside: Row(
@@ -593,38 +658,41 @@ class SettingsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: AppTheme.textColor.withOpacity(.4)),
-          top: BorderSide(color: AppTheme.textColor.withOpacity(.4)),
-        ),
-      ),
-      padding: EdgeInsets.symmetric(vertical: paddingHorizontal),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              buttonIcon != null
-                  ? FaIcon(
-                      buttonIcon,
-                      size: 14,
-                      color: AppTheme.textColor,
-                    )
-                  : Container(),
-              AppText(
-                text: buttonName,
-                size: 14,
-              ),
-            ],
+    return GestureDetector(
+      onTap: () => buttonOnclick(),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: AppTheme.textColor.withOpacity(.4)),
+            top: BorderSide(color: AppTheme.textColor.withOpacity(.4)),
           ),
-          FaIcon(
-            FontAwesomeIcons.angleRight,
-            size: 14,
-            color: AppTheme.textColor,
-          )
-        ],
+        ),
+        padding: EdgeInsets.symmetric(vertical: paddingHorizontal),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                buttonIcon != null
+                    ? FaIcon(
+                        buttonIcon,
+                        size: 14,
+                        color: AppTheme.textColor,
+                      )
+                    : Container(),
+                AppText(
+                  text: buttonName,
+                  size: 14,
+                ),
+              ],
+            ),
+            FaIcon(
+              FontAwesomeIcons.angleRight,
+              size: 14,
+              color: AppTheme.textColor,
+            )
+          ],
+        ),
       ),
     );
   }

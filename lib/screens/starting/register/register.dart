@@ -1,9 +1,11 @@
 import 'dart:ui';
+import 'package:envanterimservetim/core/classes/shop.dart';
 import 'package:envanterimservetim/core/classes/user.dart';
 import 'package:envanterimservetim/core/constants/sizeconfig.dart';
 import 'package:envanterimservetim/core/constants/stringConstans.dart';
 import 'package:envanterimservetim/core/constants/theme.dart';
 import 'package:envanterimservetim/screens/starting/loading/components/logoContainer.dart';
+import 'package:envanterimservetim/screens/starting/mail_comfimataion.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
 import 'package:envanterimservetim/widgets/box_view.dart';
 import 'package:envanterimservetim/widgets/textfield.dart';
@@ -213,14 +215,13 @@ class _RegisterScreenState extends State<RegisterScreen>
                                             children: [
                                               AppText(
                                                 text: 'İsminiz',
-                                                color: Colors.white,
                                                 size: 16,
                                               ),
                                               CustomTextfield(
                                                 hintText: 'İsminiz',
                                                 focusNode: _focusNode,
                                                 controller: _editingController,
-                                                color: AppBlackTheme.textColor,
+                                                color: AppTheme.textColor,
                                                 onChange: (news) {
                                                   setState(() {
                                                     formName = news;
@@ -238,12 +239,11 @@ class _RegisterScreenState extends State<RegisterScreen>
                                             children: [
                                               AppText(
                                                 text: 'Kullanıcı Adınız',
-                                                color: Colors.white,
                                                 size: 16,
                                               ),
                                               CustomTextfield(
                                                 hintText: 'Kullanıcı Adınız',
-                                                color: AppBlackTheme.textColor,
+                                                color: AppTheme.textColor,
                                                 focusNode: _focusNode1,
                                                 controller: _editingController1,
                                                 onChange: (news) {
@@ -263,12 +263,11 @@ class _RegisterScreenState extends State<RegisterScreen>
                                             children: [
                                               AppText(
                                                 text: 'E-Mail Adresiniz',
-                                                color: Colors.white,
                                                 size: 16,
                                               ),
                                               CustomTextfield(
                                                 hintText: 'E-mail Adresiniz',
-                                                color: AppBlackTheme.textColor,
+                                                color: AppTheme.textColor,
                                                 focusNode: _focusNode2,
                                                 controller: _editingController2,
                                                 onChange: (news) {
@@ -289,7 +288,6 @@ class _RegisterScreenState extends State<RegisterScreen>
                                             children: [
                                               AppText(
                                                 text: 'Cinsiyetiniz',
-                                                color: Colors.white,
                                                 size: 16,
                                               ),
                                               GestureDetector(
@@ -481,7 +479,6 @@ class _RegisterScreenState extends State<RegisterScreen>
                                                 children: [
                                                   AppText(
                                                     text: 'Adresiniz',
-                                                    color: Colors.white,
                                                     size: 16,
                                                   ),
                                                   GestureDetector(
@@ -528,7 +525,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                               CustomTextfield(
                                                 hintText: 'Adresiniz',
                                                 maxLineCount: 2,
-                                                color: AppBlackTheme.textColor,
+                                                color: AppTheme.textColor,
                                                 controller: _editingController3,
                                                 onChange: (news) {
                                                   setState(() {
@@ -552,7 +549,6 @@ class _RegisterScreenState extends State<RegisterScreen>
                                                 children: [
                                                   AppText(
                                                     text: 'Telefon Numaranız',
-                                                    color: Colors.white,
                                                     size: 16,
                                                   ),
                                                   GestureDetector(
@@ -598,7 +594,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                                   : Container(),
                                               CustomTextfield(
                                                 hintText: 'Telefon Numaranız',
-                                                color: AppBlackTheme.textColor,
+                                                color: AppTheme.textColor,
                                                 keyboardType:
                                                     TextInputType.phone,
                                                 controller: _editingController4,
@@ -619,7 +615,6 @@ class _RegisterScreenState extends State<RegisterScreen>
                                             children: [
                                               AppText(
                                                 text: 'Şifreniz',
-                                                color: Colors.white,
                                                 size: 16,
                                               ),
                                               Row(
@@ -632,8 +627,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                                       controller:
                                                           _editingController5,
                                                       isLast: true,
-                                                      color: AppBlackTheme
-                                                          .textColor,
+                                                      color: AppTheme.textColor,
                                                       onChange: (news) {
                                                         setState(() {
                                                           password = news;
@@ -658,7 +652,6 @@ class _RegisterScreenState extends State<RegisterScreen>
                                                             ? Icons.visibility
                                                             : Icons
                                                                 .visibility_off,
-                                                        color: Colors.white,
                                                       ),
                                                     ),
                                                   )
@@ -675,7 +668,6 @@ class _RegisterScreenState extends State<RegisterScreen>
                                             children: [
                                               AppText(
                                                 text: 'Şifreniz',
-                                                color: Colors.white,
                                                 size: 16,
                                               ),
                                               Row(
@@ -688,8 +680,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                                       controller:
                                                           _editingController6,
                                                       isLast: true,
-                                                      color: AppBlackTheme
-                                                          .textColor,
+                                                      color: AppTheme.textColor,
                                                       onChange: (news) {
                                                         setState(() {
                                                           password_second =
@@ -715,7 +706,6 @@ class _RegisterScreenState extends State<RegisterScreen>
                                                             ? Icons.visibility
                                                             : Icons
                                                                 .visibility_off,
-                                                        color: Colors.white,
                                                       ),
                                                     ),
                                                   )
@@ -844,7 +834,6 @@ class _RegisterScreenState extends State<RegisterScreen>
                                     Container(
                                       child: FaIcon(
                                         FontAwesomeIcons.wifi,
-                                        color: Colors.white,
                                         size: 54,
                                       ),
                                     ),
@@ -854,7 +843,6 @@ class _RegisterScreenState extends State<RegisterScreen>
                                       child: AppText(
                                         text:
                                             'Sanırım Bağlantı Problemleri Yaşıyorsun!',
-                                        color: Colors.white,
                                         size: 24,
                                         align: TextAlign.center,
                                       ),
@@ -873,9 +861,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                         ? Container(
                                             width: 50,
                                             height: 50,
-                                            child: CircularProgressIndicator(
-                                              color: Colors.white,
-                                            ),
+                                            child: CircularProgressIndicator(),
                                           )
                                         : GestureDetector(
                                             onTap: () {
@@ -898,11 +884,9 @@ class _RegisterScreenState extends State<RegisterScreen>
                                                   AppText(
                                                     text: 'Tekrar Kontrol Et',
                                                     fontWeight: FontWeight.w600,
-                                                    color: Colors.white,
                                                   ),
                                                   FaIcon(
                                                     FontAwesomeIcons.refresh,
-                                                    color: Colors.white,
                                                   )
                                                 ],
                                               ),
@@ -913,7 +897,9 @@ class _RegisterScreenState extends State<RegisterScreen>
                         ),
                         GSOP_Mail_Comfirmation(
                           fetchedMap: fetchedMap,
-                          updatePage: widget.updatePage!,
+                          updatePage: () {
+                            widget.updatePage!(pageId: 94);
+                          },
                         )
                       ],
                     ),
@@ -1003,262 +989,5 @@ class _RegisterScreenState extends State<RegisterScreen>
         );
       }),
     );
-  }
-}
-
-class GSOP_Mail_Comfirmation extends StatefulWidget {
-  const GSOP_Mail_Comfirmation({
-    super.key,
-    required this.fetchedMap,
-    required this.updatePage,
-  });
-  final Map<String, dynamic> fetchedMap;
-  final Function updatePage;
-  @override
-  State<GSOP_Mail_Comfirmation> createState() => _GSOP_Mail_ComfirmationState();
-}
-
-class _GSOP_Mail_ComfirmationState extends State<GSOP_Mail_Comfirmation> {
-  FocusNode _focusNode = FocusNode(),
-      _focusNode1 = FocusNode(),
-      _focusNode2 = FocusNode(),
-      _focusNode3 = FocusNode();
-
-  TextEditingController _editingController = TextEditingController(),
-      _editingController1 = TextEditingController(),
-      _editingController2 = TextEditingController(),
-      _editingController3 = TextEditingController();
-
-  bool error = false, loading = false;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  void setFocus(int hasFocused) {
-    switch (hasFocused) {
-      case 0:
-        FocusScope.of(context).requestFocus(_focusNode);
-        break;
-      case 1:
-        FocusScope.of(context).requestFocus(_focusNode1);
-        break;
-      case 2:
-        FocusScope.of(context).requestFocus(_focusNode2);
-        break;
-      case 3:
-        FocusScope.of(context).requestFocus(_focusNode3);
-        break;
-      default:
-        FocusScope.of(context).requestFocus(_focusNode);
-    }
-  }
-
-  String mailKey() {
-    return _editingController.text +
-        _editingController1.text +
-        _editingController2.text +
-        _editingController3.text;
-  }
-
-  Future isEmailOkay() async {
-    setState(() {
-      loading = true;
-    });
-    Map<String, dynamic> data = widget.fetchedMap;
-    data['check_mail_key'] = 'ok';
-    data['mail_key'] = mailKey();
-    bool dance = await User.chekMailKey(data);
-    if (dance) {
-      widget.updatePage(pageId: 94);
-    } else {
-      setState(() {
-        loading = false;
-        error = true;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.only(
-          bottom: getPaddingScreenBottomHeight() + paddingHorizontal,
-        ),
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
-            child: Container(
-              height:
-                  MediaQuery.of(context).size.height - 3 * paddingHorizontal,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Logo(),
-                  Box_View(
-                    boxInside: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AppText(
-                          text: 'Emailinizi Onaylayın',
-                          color: Colors.white,
-                          size: 16,
-                        ),
-                        AppText(
-                          text:
-                              'Size daha iyi hizmet verebilmemiz ve güvenliğinizi sağlayabilmemiz için lütfen e-posta adresinizi onaylayın. Onaylamak için mailinize gönderilen kodu girebilirsiniz.',
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 5),
-                                child: CustomTextfield(
-                                  focusNode: _focusNode,
-                                  controller: _editingController,
-                                  keyboardType: TextInputType.number,
-                                  align: TextAlign.center,
-                                  size: 30,
-                                  onChange: (String value) {
-                                    if (value.length == 1) {
-                                      setFocus(1);
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 5),
-                                child: CustomTextfield(
-                                  focusNode: _focusNode1,
-                                  controller: _editingController1,
-                                  keyboardType: TextInputType.number,
-                                  align: TextAlign.center,
-                                  onChange: (String value) {
-                                    print(value.length);
-                                    if (value.length == 1) {
-                                      setFocus(2);
-                                    }
-                                    if (value.length == 0) {
-                                      setFocus(0);
-                                    }
-                                  },
-                                  size: 30,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 5),
-                                child: CustomTextfield(
-                                  focusNode: _focusNode2,
-                                  controller: _editingController2,
-                                  keyboardType: TextInputType.number,
-                                  align: TextAlign.center,
-                                  onChange: (String value) {
-                                    if (value.length == 1) {
-                                      setFocus(3);
-                                    }
-                                    if (value.length == 0) {
-                                      setFocus(1);
-                                    }
-                                  },
-                                  size: 30,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 5),
-                                child: CustomTextfield(
-                                  focusNode: _focusNode3,
-                                  controller: _editingController3,
-                                  keyboardType: TextInputType.number,
-                                  align: TextAlign.center,
-                                  onChange: (String value) {
-                                    if (value.length == 1) {
-                                      FocusScope.of(context)
-                                          .requestFocus(FocusNode());
-                                    }
-                                    if (value.length == 0) {
-                                      setFocus(2);
-                                    }
-                                  },
-                                  size: 30,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        error
-                            ? Container(
-                                child: AppText(
-                                  text:
-                                      'Girdiğiniz anahtar yanlıştır. lütfen tekrar deneyiniz',
-                                  color: AppTheme.alertRed[0],
-                                ),
-                              )
-                            : Container()
-                      ],
-                    ),
-                  ),
-                  loading
-                      ? Center(
-                          child: Container(
-                          height: 50,
-                          width: 50,
-                          child: CircularProgressIndicator(
-                            color: AppTheme.contrastColor1,
-                          ),
-                        ))
-                      : Column(
-                          children: [
-                            Box_View(
-                              boxInside: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  AppText(
-                                    text: 'Maili Tekrar Gönder',
-                                    size: 14,
-                                  ),
-                                  FaIcon(
-                                    FontAwesomeIcons.envelope,
-                                    color: AppTheme.textColor,
-                                  )
-                                ],
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: isEmailOkay,
-                              child: Box_View(
-                                color: AppTheme.contrastColor1.withOpacity(.6),
-                                boxInside: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    AppText(
-                                      text: 'Onayla',
-                                      size: 14,
-                                    ),
-                                    FaIcon(
-                                      FontAwesomeIcons.check,
-                                      color: AppTheme.textColor,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                ],
-              ),
-            ),
-          ),
-        ));
   }
 }

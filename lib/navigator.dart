@@ -9,6 +9,7 @@ import 'package:envanterimservetim/screens/homepage/homepage.dart';
 import 'package:envanterimservetim/screens/newProduct/newproduct.dart';
 import 'package:envanterimservetim/screens/newTeammate/newTeammate.dart';
 import 'package:envanterimservetim/screens/productScreen/product.dart';
+import 'package:envanterimservetim/screens/profile/my_profile/my_profile.dart';
 import 'package:envanterimservetim/screens/settings/settingsScreen.dart';
 
 import 'package:envanterimservetim/screens/starting/appInfo/appInfo.dart';
@@ -255,6 +256,19 @@ class _AppNavigatorScreenState extends State<AppNavigatorScreen>
             );
           });
           break;
+
+        case 31:
+          setState(() {
+            currIndex = 3;
+            bottombar = true;
+            tabBody = MyProfile(
+              scaffoldKey: scaffoldKey,
+              animationController: animationController,
+              updatePage: _updateBar,
+            );
+          });
+          break;
+
         case 90:
           setState(() {
             bottombar = false;
@@ -296,7 +310,6 @@ class _AppNavigatorScreenState extends State<AppNavigatorScreen>
           break;
         case 94:
           setState(() {
-            print('madness ${pageContent['isOnlyTheme']}');
             bottombar = false;
             tabBody = LoadingScreen(
               isOnlyThemeChange: pageContent['isOnlyTheme'] ?? false,

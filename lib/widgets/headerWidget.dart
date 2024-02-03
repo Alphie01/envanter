@@ -74,7 +74,9 @@ class HeaderWidget extends StatelessWidget {
                             1.75 * paddingHorizontal,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AppTheme.logo,
+                            image: headerIconColor == Colors.white
+                                ? AssetImage('assets/logo.png')
+                                : AppTheme.logo,
                             fit: BoxFit.contain,
                           ),
                         ),
@@ -88,11 +90,13 @@ class HeaderWidget extends StatelessWidget {
                             AppText(
                               text: 'Envanterim',
                               size: 13,
+                              color: headerIconColor,
                               fontWeight: FontWeight.bold,
                             ),
                             AppText(
                               text: 'İş Hayatım',
                               size: 13,
+                              color: headerIconColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ],
@@ -123,9 +127,8 @@ class HeaderWidget extends StatelessWidget {
                       children: [
                         FaIcon(
                           FontAwesomeIcons.envelope,
-                          color: AppTheme.textColor,
+                          color: headerIconColor,
                         ),
-                        
                       ],
                     ),
                   ),
@@ -144,7 +147,7 @@ class HeaderWidget extends StatelessWidget {
                     children: [
                       FaIcon(
                         FontAwesomeIcons.user,
-                        color: AppTheme.textColor,
+                        color: headerIconColor,
                       ),
                       Shop.selectedShop!.shopPermissions.shop_can_add_teammates
                           ? Transform.translate(

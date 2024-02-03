@@ -8,6 +8,7 @@ import 'package:envanterimservetim/screens/homepage/component/fastProcess.dart';
 import 'package:envanterimservetim/widgets/ads/adsOfApp.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
 import 'package:envanterimservetim/widgets/expandedPageview.dart';
+import 'package:envanterimservetim/widgets/networkImage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -59,13 +60,8 @@ class HomeWelcome extends StatelessWidget {
                 Container(
                   width: 50,
                   height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    image: DecorationImage(
-                      fit: BoxFit.contain,
-                      image: User.userProfile!.userProfilePhoto,
-                    ),
-                  ),
+                  child:
+                      NetworkContainer(imageUrl: Shop.selectedShop!.shop_image),
                 ),
                 Container(
                   padding: EdgeInsets.all(paddingHorizontal),

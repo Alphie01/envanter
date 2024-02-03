@@ -55,15 +55,20 @@ class _ProductCategoriesState extends State<ProductCategories> {
                   ? Row(
                       children: [
                         Expanded(
-                          child: AppText(text: categories!.name),
+                          child: AppText(
+                            text: categories!.name,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     )
                   : Row(
                       children: [
                         Expanded(
-                          child:
-                              AppText(text: 'Ürünün Kategorisi Seçilmemiştir.'),
+                          child: AppText(
+                            text: 'Ürünün Kategorisi Seçilmemiştir.',
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
@@ -91,7 +96,7 @@ class _SelectCategoriesState extends State<SelectCategories> {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: .8,
+      initialChildSize: .4,
       maxChildSize: .9,
       builder: (_, controller) {
         return Container(

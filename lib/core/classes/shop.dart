@@ -1,5 +1,9 @@
-import 'dart:convert';
+// ignore_for_file: non_constant_identifier_names
 
+import 'dart:convert';
+import 'dart:math';
+
+import 'package:envanterimservetim/core/classes/brand.dart';
 import 'package:envanterimservetim/core/classes/notifications.dart';
 import 'package:envanterimservetim/core/classes/product.dart';
 import 'package:envanterimservetim/core/classes/user.dart';
@@ -35,6 +39,7 @@ class Shop {
   });
 
   static List<Shop> attendedShops = [];
+  static List<Shop> invitedShops = [];
   static Shop? selectedShop = null;
 /* 
   static List<ShopTable> listofShopTable = [];
@@ -103,10 +108,85 @@ class Shop {
       if (returns['notification'] != []) {
         Notifications.initilazeNotifications(returns['notification']);
       }
+      if (returns['shop_sells'] != []) {
+        Siparis.initilizeOrdersFromDatabase(returns['shop_sells']);
+      }
 
       return true;
     } else {
       return false;
+    }
+  }
+
+  static Future<bool> shop_changeUserPermission(
+      {User? selectedUser, int permissionLevel = 0}) async {
+    Map<String, dynamic> data = {
+      'shop_changeUserPermission': 'ok',
+      'shop_id': Shop.selectedShop!.shop_id,
+      'changed_userId': selectedUser!.userId,
+      'permissionLevel': permissionLevel
+    };
+    Map returns = await HTTP_Requests.sendPostRequest(data);
+
+    print(returns);
+    if (returns['id'] == 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<bool> shop_answerInvitation(
+      {bool answer = false, required int token}) async {
+    Map<String, dynamic> data = {
+      'answerInvitation': 'ok',
+      'shop_id': token,
+      'answeredUser_id': User.userProfile!.userId,
+      'answer': answer ? 1 : -1
+    };
+    Map returns = await HTTP_Requests.sendPostRequest(data);
+
+    if (returns['id'] == 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<bool> shop_leaveCompany(
+      {bool answer = false, required int token}) async {
+    Map<String, dynamic> data = {
+      'leaveCompany': 'ok',
+      'shop_id': token,
+      'answeredUser_id': User.userProfile!.userId,
+      'answer': -1
+    };
+    Map returns = await HTTP_Requests.sendPostRequest(data);
+
+    if (returns['id'] == 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<Map> shop_sendInvitation({required User worker}) async {
+    int token = selectedShop!.shop_id;
+
+    Map<String, dynamic> data = {
+      'sendInvitation': 'ok',
+      'shop_id': token,
+      'user_id': worker.userId,
+      'answeredUser_id': User.userProfile!.userId,
+      'answer': 2
+    };
+    Map returns = await HTTP_Requests.sendPostRequest(data);
+
+    print(returns);
+    if (returns['id'] == 0) {
+      return {'id': 0};
+    } else {
+      return returns;
     }
   }
 
@@ -136,6 +216,16 @@ class Shop {
     }
   }
 
+  static User? userFindById(String id) {
+    int indexOfExistingShopTableOrder =
+        selectedShop!.shopWorkers.indexWhere((element) => element.userId == id);
+    if (indexOfExistingShopTableOrder != -1) {
+      return selectedShop!.shopWorkers[indexOfExistingShopTableOrder];
+    } else {
+      return null;
+    }
+  }
+
   static Future<User> getWorkerMoreInfo(User userInfo) async {
     User retUser = userInfo;
     Map<String, dynamic> data = {
@@ -157,11 +247,13 @@ class Shop {
   static Future<List<User>?> getUserByMails(String userMail) async {
     Map<String, dynamic> data = {
       'getUserByMails': 'ok',
-      'kullanici_mail': userMail
+      'kullanici_mail': userMail,
+      'shop_id': selectedShop!.shop_id
     };
     Map returns = await HTTP_Requests.sendPostRequest(data);
 
     if (returns['id'] == 0) {
+      print(returns['UserByMails']);
       return User.initUserByList(returns['UserByMails']);
     }
     return null;
@@ -169,6 +261,7 @@ class Shop {
 
   static void clearShopDatas() {
     Product.clearShopProduct();
+    Siparis.clearSiparisList();
     Categories.clearCategories();
     Notifications.notificationClear();
   }
@@ -300,8 +393,6 @@ class Shop {
         userPermissionLevel: 5,
       );
 
-      //TODO product initilize
-
       return true;
     } else {
       return false;
@@ -369,7 +460,24 @@ class Shop {
     }
   }
 
+  static void setInvitedShops(List<dynamic> shop) {
+    invitedShops = [];
+    for (var element in shop) {
+      invitedShops.add(Shop(
+        shop_id: int.parse(element['shop_id']),
+        shop_name: element['shop_name'],
+        shop_token: element['shop_token'],
+        shop_image: NetworkImage(element['shop_image']),
+        shopType: int.parse(element['shop_type']),
+        userPermissionLevel: int.parse(element['shop_permissionLevel']),
+        shopPermissions:
+            _shopPermissionsInitilazer(jsonDecode(element['shop_permissions'])),
+      ));
+    }
+  }
+
   static void setAttendedShops(List<dynamic> shop) {
+    attendedShops = [];
     if (shop.length == 1) {
       selectedShop = Shop(
         shop_id: int.parse(shop[0]['shop_id']),
@@ -378,6 +486,7 @@ class Shop {
         shop_image: NetworkImage(shop[0]['shop_image']),
         shopType: int.parse(shop[0]['shop_type']),
         userPermissionLevel: int.parse(shop[0]['shop_permissionLevel']),
+        shop_owner_Id: int.parse(shop[0]['shop_owner_Id']),
         shopPermissions:
             _shopPermissionsInitilazer(jsonDecode(shop[0]['shop_permissions'])),
       );
@@ -391,6 +500,7 @@ class Shop {
           shop_token: element['shop_token'],
           shop_image: NetworkImage(element['shop_image']),
           shopType: int.parse(element['shop_type']),
+          shop_owner_Id: int.parse(element['shop_owner_Id']),
           userPermissionLevel: int.parse(element['shop_permissionLevel']),
           shopPermissions: _shopPermissionsInitilazer(
               jsonDecode(element['shop_permissions'])),
@@ -434,7 +544,7 @@ class Shop {
         perm = 'Yetkili Kullanıcı';
         break;
       case 5:
-        perm = 'İşletme Sahibi';
+        perm = 'Admin';
         break;
       default:
         perm = 'Kullanıcı';

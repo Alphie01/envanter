@@ -1,6 +1,7 @@
 import 'package:envanterimservetim/core/classes/shop.dart';
 import 'package:envanterimservetim/core/classes/user.dart';
 import 'package:envanterimservetim/core/constants/sizeconfig.dart';
+import 'package:envanterimservetim/core/constants/stringConstans.dart';
 import 'package:envanterimservetim/core/constants/theme.dart';
 import 'package:envanterimservetim/screens/homepage/component/introduce.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
@@ -40,7 +41,7 @@ class _NewTeammateState extends State<NewTeammate>
   //⁡⁣⁣⁢top Header Animations⁡
   AnimationController? filterAnimation, headerAnimationController;
   Animation<double>? filterOpacity, filterTransform, headerAnimation;
-  Color iconColor = AppBlackTheme.textColor;
+  Color iconColor = AppTheme.textColor;
 
   @override
   void initState() {
@@ -433,24 +434,37 @@ class _SendMAilToNewPersonState extends State<SendMAilToNewPerson> {
   List<User> askedUsers = [];
 
   Future getUsers() async {
-    if (emailThatSearch.length > 4) {
+    setState(() {
+      isError = false;
+    });
+    if (emailThatSearch.length > 4 && isEmailValid(emailThatSearch)) {
       setState(() {
         askedUsers = [];
         isFetching = true;
         isSearched = false;
       });
       List<User>? fetchedUsers = await Shop.getUserByMails(emailThatSearch);
-      setState(() {
-        askedUsers = fetchedUsers ?? [];
-        isFetching = false;
-        if (askedUsers.isEmpty) {
-          isSearched = true;
-        } else {}
-      });
+      setState(
+        () {
+          askedUsers = fetchedUsers ?? [];
+          isFetching = false;
+          if (askedUsers.isEmpty) {
+            isSearched = true;
+          } else {}
+        },
+      );
     } else {
       setState(() {
         isError = true;
       });
+    }
+  }
+
+  Future _sendInvitation(User selectedUser) async {
+    
+    Map dance = await Shop.shop_sendInvitation(worker: selectedUser);
+    if (dance['id'] == 0) {
+      Navigator.pop(context);
     }
   }
 
@@ -481,10 +495,10 @@ class _SendMAilToNewPersonState extends State<SendMAilToNewPerson> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                _sendInvitation(selectedUser);
               },
               child: AppText(
-                text: 'Kayıt Et',
+                text: 'Davet Et',
                 color: AppTheme.alertGreen[0],
               ),
             ),
@@ -658,7 +672,7 @@ class ModalOfTeammateSettings extends StatefulWidget {
 
 class _ModalOfTeammateSettingsState extends State<ModalOfTeammateSettings> {
   User? selectedPerson;
-  bool isFetchedMore = false;
+  bool isFetchedMore = false, isChangingPermission = false;
 
   @override
   void initState() {
@@ -674,6 +688,21 @@ class _ModalOfTeammateSettingsState extends State<ModalOfTeammateSettings> {
     setState(() {
       selectedPerson = fetchedUser;
       isFetchedMore = true;
+    });
+  }
+
+  Future _setPermission(int permissionLevel) async {
+    setState(() {
+      isChangingPermission = !isChangingPermission;
+    });
+    bool dance = await Shop.shop_changeUserPermission(
+        selectedUser: selectedPerson, permissionLevel: permissionLevel);
+    setState(() {
+      if (dance) {
+        selectedPerson!.userPermissionLevel = '$permissionLevel';
+        Navigator.pop(context);
+      }
+      isChangingPermission = !isChangingPermission;
     });
   }
 
@@ -790,79 +819,101 @@ class _ModalOfTeammateSettingsState extends State<ModalOfTeammateSettings> {
                                   ),
                                   padding:
                                       EdgeInsets.only(top: paddingHorizontal),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Box_View(
-                                        boxInside: Row(
+                                  child: isChangingPermission
+                                      ? Center(
+                                          child: Container(
+                                            height: 50,
+                                            width: 50,
+                                            child: CircularProgressIndicator(
+                                                color: AppTheme.contrastColor1),
+                                          ),
+                                        )
+                                      : Column(
+                                          mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            AppLargeText(
-                                                text:
-                                                    'Kullanıcının Yetkisini Belirle'),
-                                          ],
-                                        ),
-                                      ),
-                                      Box_View(
-                                        color: selectedPerson!
-                                                    .userPermissionLevel! ==
-                                                '0'
-                                            ? AppTheme.contrastColor1
-                                                .withOpacity(.6)
-                                            : null,
-                                        boxInside: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            AppLargeText(text: 'Kullanıcı'),
-                                            Container(
-                                              width: double.maxFinite,
-                                              child: AppText(text: 'text'),
+                                            Box_View(
+                                              boxInside: Row(
+                                                children: [
+                                                  AppLargeText(
+                                                      text:
+                                                          'Kullanıcının Yetkisini Belirle'),
+                                                ],
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () => _setPermission(0),
+                                              child: Box_View(
+                                                color: selectedPerson!
+                                                            .userPermissionLevel! ==
+                                                        '0'
+                                                    ? AppTheme.contrastColor1
+                                                        .withOpacity(.6)
+                                                    : null,
+                                                boxInside: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    AppLargeText(
+                                                        text: 'Kullanıcı'),
+                                                    Container(
+                                                      width: double.maxFinite,
+                                                      child:
+                                                          AppText(text: 'text'),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () => _setPermission(1),
+                                              child: Box_View(
+                                                color: selectedPerson!
+                                                            .userPermissionLevel! ==
+                                                        '1'
+                                                    ? AppTheme.contrastColor1
+                                                        .withOpacity(.6)
+                                                    : null,
+                                                boxInside: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    AppLargeText(
+                                                        text:
+                                                            'Yetkili Kullanıcı'),
+                                                    Container(
+                                                      width: double.maxFinite,
+                                                      child:
+                                                          AppText(text: 'text'),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () => _setPermission(5),
+                                              child: Box_View(
+                                                color: selectedPerson!
+                                                            .userPermissionLevel! ==
+                                                        '5'
+                                                    ? AppTheme.contrastColor1
+                                                        .withOpacity(.6)
+                                                    : null,
+                                                boxInside: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    AppLargeText(text: 'Admin'),
+                                                    Container(
+                                                      width: double.maxFinite,
+                                                      child:
+                                                          AppText(text: 'text'),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
                                             )
                                           ],
                                         ),
-                                      ),
-                                      Box_View(
-                                        color: selectedPerson!
-                                                    .userPermissionLevel! ==
-                                                '1'
-                                            ? AppTheme.contrastColor1
-                                                .withOpacity(.6)
-                                            : null,
-                                        boxInside: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            AppLargeText(
-                                                text: 'Yetkili Kullanıcı'),
-                                            Container(
-                                              width: double.maxFinite,
-                                              child: AppText(text: 'text'),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Box_View(
-                                        color: selectedPerson!
-                                                    .userPermissionLevel! ==
-                                                '5'
-                                            ? AppTheme.contrastColor1
-                                                .withOpacity(.6)
-                                            : null,
-                                        boxInside: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            AppLargeText(
-                                                text: 'İşletme Sahibi'),
-                                            Container(
-                                              width: double.maxFinite,
-                                              child: AppText(text: 'text'),
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
                                 );
                               },
                             );

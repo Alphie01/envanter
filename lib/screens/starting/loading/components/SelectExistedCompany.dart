@@ -6,6 +6,7 @@ import 'package:envanterimservetim/screens/starting/loading/components/logoConta
 import 'package:envanterimservetim/widgets/app_text.dart';
 import 'package:envanterimservetim/widgets/box_view.dart';
 import 'package:envanterimservetim/widgets/networkImage.dart';
+import 'package:envanterimservetim/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -25,6 +26,8 @@ class SelectExistedCompany extends StatefulWidget {
 
 class _SelectExistedCompanyState extends State<SelectExistedCompany> {
   bool isResulted = false, isFetching = false, isException = false;
+  String barcode = '';
+  TextEditingController textEditingController = TextEditingController();
   Shop? _selectedExisted;
   String exception = '';
   Future<void> scanQRBarcode() async {
@@ -36,15 +39,16 @@ class _SelectExistedCompanyState extends State<SelectExistedCompany> {
     );
 
     if (barcodeScanResult != '-1') {
-      setState(() {
-        isFetching = true;
-        _fetchFromServer(barcodeScanResult);
-      });
+      _fetchFromServer(barcodeScanResult);
     }
   }
 
   Future<void> _fetchFromServer(String scanedCode) async {
+    setState(() {
+      isFetching = true;
+    });
     Shop? result = await Shop.fetchExistedShop(scanedCode);
+    print(result);
     if (result != null) {
       setState(() {
         isFetching = false;
@@ -86,182 +90,251 @@ class _SelectExistedCompanyState extends State<SelectExistedCompany> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        ListView(
-          shrinkWrap: true,
-          padding: paddingZero,
-          children: [
-            Logo(),
-            Container(
-              padding: EdgeInsets.all(paddingHorizontal * 2),
-              child: AppText(
-                text: 'Olan Bir Şirkete Katılmak istiyorum',
-                color: AppTheme.white,
-                fontWeight: FontWeight.bold,
-                size: 14,
-                align: TextAlign.center,
+        GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: ListView(
+            shrinkWrap: true,
+            padding: paddingZero,
+            children: [
+              Logo(),
+              Container(
+                padding: EdgeInsets.all(paddingHorizontal * 2),
+                child: AppText(
+                  text: 'Olan Bir Şirkete Katılmak istiyorum',
+                  color: AppTheme.white,
+                  fontWeight: FontWeight.bold,
+                  size: 14,
+                  align: TextAlign.center,
+                ),
               ),
-            ),
-            isFetching
-                ? Center(
-                    child: SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
-                : isResulted
-                    ? Box_View(
-                        boxInside: SingleChildScrollView(
-                          child: isException
-                              ? Container(
-                                  padding: EdgeInsets.all(paddingHorizontal),
-                                  child: AppText(
-                                    text: '$exception',
-                                    maxLineCount: 10,
-                                  ),
-                                )
-                              : Column(
-                                  children: [
-                                    Container(
-                                      height: 100,
-                                      width: 100,
-                                      child: NetworkContainer(
-                                          imageUrl:
-                                              _selectedExisted!.shop_image),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: paddingHorizontal),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          AppText(
-                                            text: 'İşletmenin İsimi',
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          AppText(
-                                            text:
-                                                '${_selectedExisted!.shop_name}',
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: paddingHorizontal),
-                                      child: AppText(
-                                        text: _selectedExisted!.shopPrivacy == 1
-                                            ? "İşletme gizlilik açısından açık konumdadır. 'Direk Katıl' butonuna basarak sizlerde işletmeye giriş yapabilirsiniz."
-                                            : 'İşletme gizlilik açısından kapalı konumdadır. İşletmye giriş yapmanız için öncelikle işletme yetkililerinin sizi onaylaması lazımdır.',
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: _enterToShop,
-                                      child: Container(
+              isFetching
+                  ? Center(
+                      child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                  : isResulted
+                      ? Box_View(
+                          boxInside: SingleChildScrollView(
+                            child: isException
+                                ? Column(
+                                    children: [
+                                      Container(
                                         padding:
                                             EdgeInsets.all(paddingHorizontal),
-                                        decoration: BoxDecoration(
-                                            color: AppTheme.contrastColor1,
-                                            borderRadius: BorderRadius.circular(
-                                                paddingHorizontal)),
-                                        child:
-                                            _selectedExisted!.shopPrivacy == 1
-                                                ? Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      AppText(
-                                                        text: 'Direk Katıl',
-                                                        color: Colors.white,
-                                                      ),
-                                                    ],
-                                                  )
-                                                : Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      AppText(
-                                                        text:
-                                                            'Katılmak İçin İzin İste',
-                                                        color: Colors.white,
-                                                      ),
-                                                    ],
-                                                  ),
+                                        child: AppText(
+                                          text: '$exception',
+                                          maxLineCount: 10,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: paddingHorizontal,
-                                    ),
-                                    GestureDetector(
-                                      onTap: scanQRBarcode,
-                                      child: Container(
-                                        padding:
-                                            EdgeInsets.all(paddingHorizontal),
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: AppTheme.contrastColor1,
-                                            ),
-                                            borderRadius: BorderRadius.circular(
-                                                paddingHorizontal)),
+                                    ],
+                                  )
+                                : Column(
+                                    children: [
+                                      Container(
+                                        height: 100,
+                                        width: 100,
+                                        child: NetworkContainer(
+                                            imageUrl:
+                                                _selectedExisted!.shop_image),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: paddingHorizontal),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             AppText(
-                                              text: 'Tekrar Okut',
+                                              text: 'İşletmenin İsimi',
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            AppText(
+                                              text:
+                                                  '${_selectedExisted!.shop_name}',
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                        ),
-                      )
-                    : Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(paddingHorizontal * 2),
-                            child: AppText(
-                              text:
-                                  'Katılmak istediğiniz işletmenin qr kodunu okutarak sizlerde işletmeye katılma isteği gönderebilirsiniz.',
-                              color: AppTheme.white,
-                              align: TextAlign.center,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: scanQRBarcode,
-                            child: Box_View(
-                              boxInside: Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        AppText(
-                                          text:
-                                              'Olan Bir İşletmenin Altına Giriş Yap',
-                                          fontWeight: FontWeight.bold,
-                                          size: 13,
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: paddingHorizontal),
+                                        child: AppText(
+                                          text: _selectedExisted!.shopPrivacy ==
+                                                  1
+                                              ? "İşletme gizlilik açısından açık konumdadır. 'Direk Katıl' butonuna basarak sizlerde işletmeye giriş yapabilirsiniz."
+                                              : 'İşletme gizlilik açısından kapalı konumdadır. İşletmye giriş yapmanız için öncelikle işletme yetkililerinin sizi onaylaması lazımdır.',
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: _enterToShop,
+                                        child: Container(
+                                          padding:
+                                              EdgeInsets.all(paddingHorizontal),
+                                          decoration: BoxDecoration(
+                                              color: AppTheme.contrastColor1,
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      paddingHorizontal)),
+                                          child:
+                                              _selectedExisted!.shopPrivacy == 1
+                                                  ? Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        AppText(
+                                                          text: 'Direk Katıl',
+                                                          color: Colors.white,
+                                                        ),
+                                                      ],
+                                                    )
+                                                  : Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        AppText(
+                                                          text:
+                                                              'Katılmak İçin İzin İste',
+                                                          color: Colors.white,
+                                                        ),
+                                                      ],
+                                                    ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: paddingHorizontal,
+                                      ),
+                                      GestureDetector(
+                                        onTap: scanQRBarcode,
+                                        child: Container(
+                                          padding:
+                                              EdgeInsets.all(paddingHorizontal),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: AppTheme.contrastColor1,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      paddingHorizontal)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              AppText(
+                                                text: 'Tekrar Okut',
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  FaIcon(
-                                    FontAwesomeIcons.qrcode,
+                          ),
+                        )
+                      : Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(paddingHorizontal * 2),
+                              child: AppText(
+                                text:
+                                    'Katılmak istediğiniz işletmenin qr kodunu okutarak sizlerde işletmeye katılma isteği gönderebilirsiniz.',
+                                color: AppTheme.white,
+                                align: TextAlign.center,
+                              ),
+                            ),
+                            Box_View(
+                              boxInside: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppText(
+                                    text: 'Başvuru Kodunu Yazınız',
+                                    size: 16,
+                                  ),
+                                  CustomTextfield(
+                                    hintText: 'Başvuru Kodunu Yazınız',
                                     color: AppTheme.textColor,
-                                  )
+                                    controller: textEditingController,
+                                    onChange: (news) {
+                                      setState(() {
+                                        barcode = news;
+                                      });
+                                    },
+                                  ),
                                 ],
                               ),
                             ),
-                          ),
-                        ],
-                      )
-          ],
+                            GestureDetector(
+                              onTap: () {
+                                _fetchFromServer(barcode);
+                              },
+                              child: Box_View(
+                                boxInside: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          AppText(
+                                            text: 'Yazdığın Kod ile Başvur',
+                                            fontWeight: FontWeight.bold,
+                                            size: 13,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    FaIcon(
+                                      FontAwesomeIcons.qrcode,
+                                      color: AppTheme.textColor,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: paddingHorizontal),
+                              child: AppLargeText(
+                                text: 'Veya',
+                                color: Colors.white,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: scanQRBarcode,
+                              child: Box_View(
+                                boxInside: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          AppText(
+                                            text: 'Qr Kodu Okut',
+                                            fontWeight: FontWeight.bold,
+                                            size: 13,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    FaIcon(
+                                      FontAwesomeIcons.qrcode,
+                                      color: AppTheme.textColor,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+            ],
+          ),
         ),
         GestureDetector(
           onTap: () {

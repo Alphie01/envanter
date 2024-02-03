@@ -1,3 +1,199 @@
-[{"title":"yeni \u00fcr\u00fcn","barcode":"0512345000107","description":"ah\u00f6nahb","vatRate":"20","sizeLists":[{"id":"68674036","nameOfSize":"deneme-1","quantity":"0","alertLowStock":"5480","stockCode":"yeni \u00fcr\u00fcn","dimensionalWeight":"20cma","listPrice":"258.0","listPriceCurrency":"USD","salePrice":"250.0","salePriceCurency":"TRY"},{"id":"58607631","nameOfSize":"deneme-2","quantity":"22","alertLowStock":"22","stockCode":"she love someone else","dimensionalWeight":"120cm","listPrice":"256.0","listPriceCurrency":"USD","salePrice":"228649.0","salePriceCurency":"TRY"},{"id":"1234123234","nameOfSize":"deneme-3","quantity":"22","alertLowStock":"22","stockCode":"she love someone else","dimensionalWeight":"120cm","listPrice":"256.0","listPriceCurrency":"USD","salePrice":"228649.0","salePriceCurency":"TRY"}],"images":["https:\/\/robolink.com.tr\/products\/00020-403714294-29202image_0.jpg","https:\/\/robolink.com.tr\/products\/00020-403714294-30124image_1.jpg","https:\/\/robolink.com.tr\/products\/00020-403714294-28305image_2.jpg"],"user":{"id":"2","userMail":"onderalpselcuk@gmail.com","userName":"Onder Alp Selcuk"}},{"title":"deneme","barcode":"1312312414","description":"a\u00e7\u0131lacak ","vatRate":"20","sizeLists":[{"id":"58607631","nameOfSize":"deneme-4","quantity":"22","alertLowStock":"22","stockCode":"she love someone else","dimensionalWeight":"120cm","listPrice":"256.0","listPriceCurrency":"USD","salePrice":"228649.0","salePriceCurency":"TRY"}],"images":["https:\/\/robolink.com.tr\/products\/00020-403714294-27344image_0.jpg","https:\/\/robolink.com.tr\/products\/00020-403714294-22416image_1.jpg","https:\/\/robolink.com.tr\/products\/00020-403714294-31060image_2.jpg"],"user":{"id":"2","userMail":"onderalpselcuk@gmail.com","userName":"Onder Alp Selcuk"}},{"title":"anan\u0131n b\u00f6re\u011fi","barcode":"3433","description":"a\u00e7\u0131klama","vatRate":"20","sizeLists":[{"id":"1092702","nameOfSize":"","quantity":"584","alertLowStock":"22","stockCode":"hasta","dimensionalWeight":"33cm","listPrice":"128.0","listPriceCurrency":"USD","salePrice":"360.0","salePriceCurency":"TRY"}],"categories":{"name":"Biralar","menuTypeId":"16309","subCategoriesId":"33"},"images":["https:\/\/robolink.com.tr\/products\/00020-403714294-29908image_0.jpg","https:\/\/robolink.com.tr\/products\/00020-403714294-22516image_1.jpg","https:\/\/robolink.com.tr\/products\/00020-403714294-28085image_2.jpg"],"user":{"id":"2","userMail":"onderalpselcuk@gmail.com","userName":"Onder Alp Selcuk"}},{"title":"a\u00e7\u0131k isin","barcode":"343341 242","description":"a\u00e7\u0131klama","vatRate":"20","sizeLists":[{"id":"77693075","nameOfSize":"","quantity":"22","alertLowStock":"22","stockCode":"agabab","dimensionalWeight":"30cm","listPrice":"238.0","listPriceCurrency":"EUR","salePrice":"233.0","salePriceCurency":"JPY"}],"images":["https:\/\/robolink.com.tr\/products\/00020-403714294-20349image_0.jpg","https:\/\/robolink.com.tr\/products\/00020-403714294-20686image_1.jpg","https:\/\/robolink.com.tr\/products\/00020-403714294-25020image_2.jpg","https:\/\/robolink.com.tr\/products\/00020-403714294-23077image_3.jpg"],"user":{"id":"2","userMail":"onderalpselcuk@gmail.com","userName":"Onder Alp Selcuk"}},{"title":"\u00e7ok zor","barcode":"343341 242451","description":"a\u00e7\u0131klama","vatRate":"20","sizeLists":[{"id":"16308657","nameOfSize":"","quantity":"22","alertLowStock":"368","stockCode":"stok 1 ","dimensionalWeight":"kajaba","listPrice":"25.0","listPriceCurrency":"USD","salePrice":"25.0","salePriceCurency":"TRY"}],"categories":{"name":"deneme","menuTypeId":"20318","subCategoriesId":"-1"},"images":[],"user":{"id":"2","userMail":"onderalpselcuk@gmail.com","userName":"Onder Alp Selcuk"}},{"title":"\u00e7ok zor","barcode":"343341 242451","description":"a\u00e7\u0131klama","vatRate":"20","sizeLists":[{"id":"16308657","nameOfSize":"","quantity":"22","alertLowStock":"368","stockCode":"stok 1 ","dimensionalWeight":"kajaba","listPrice":"25.0","listPriceCurrency":"USD","salePrice":"25.0","salePriceCurency":"TRY"}],"categories":{"name":"deneme","menuTypeId":"20318","subCategoriesId":"-1"},"images":[],"user":{"id":"2","userMail":"onderalpselcuk@gmail.com","userName":"Onder Alp Selcuk"}}]
-
-
+[
+  {
+    "title": "yeni \u00fcr\u00fcn",
+    "barcode": "0512345000107",
+    "description": "ah\u00f6nahb",
+    "vatRate": "20",
+    "sizeLists": [
+      {
+        "id": "68674036",
+        "nameOfSize": "deneme-1",
+        "quantity": "0",
+        "alertLowStock": "5480",
+        "stockCode": "yeni \u00fcr\u00fcn",
+        "dimensionalWeight": "20cma",
+        "listPrice": "258.0",
+        "listPriceCurrency": "USD",
+        "salePrice": "250.0",
+        "salePriceCurency": "TRY"
+      },
+      {
+        "id": "58607631",
+        "nameOfSize": "deneme-2",
+        "quantity": "22",
+        "alertLowStock": "22",
+        "stockCode": "she love someone else",
+        "dimensionalWeight": "120cm",
+        "listPrice": "256.0",
+        "listPriceCurrency": "USD",
+        "salePrice": "228649.0",
+        "salePriceCurency": "TRY"
+      },
+      {
+        "id": "1234123234",
+        "nameOfSize": "deneme-3",
+        "quantity": "22",
+        "alertLowStock": "22",
+        "stockCode": "she love someone else",
+        "dimensionalWeight": "120cm",
+        "listPrice": "256.0",
+        "listPriceCurrency": "USD",
+        "salePrice": "228649.0",
+        "salePriceCurency": "TRY"
+      }
+    ],
+    "images": [
+      "https://robolink.com.tr/products/00020-403714294-29202image_0.jpg",
+      "https://robolink.com.tr/products/00020-403714294-30124image_1.jpg",
+      "https://robolink.com.tr/products/00020-403714294-28305image_2.jpg"
+    ],
+    "user": {
+      "id": "2",
+      "userMail": "onderalpselcuk@gmail.com",
+      "userName": "Onder Alp Selcuk"
+    }
+  },
+  {
+    "title": "deneme",
+    "barcode": "1312312414",
+    "description": "a\u00e7\u0131lacak ",
+    "vatRate": "20",
+    "sizeLists": [
+      {
+        "id": "58607631",
+        "nameOfSize": "deneme-4",
+        "quantity": "22",
+        "alertLowStock": "22",
+        "stockCode": "she love someone else",
+        "dimensionalWeight": "120cm",
+        "listPrice": "256.0",
+        "listPriceCurrency": "USD",
+        "salePrice": "228649.0",
+        "salePriceCurency": "TRY"
+      }
+    ],
+    "images": [
+      "https://robolink.com.tr/products/00020-403714294-27344image_0.jpg",
+      "https://robolink.com.tr/products/00020-403714294-22416image_1.jpg",
+      "https://robolink.com.tr/products/00020-403714294-31060image_2.jpg"
+    ],
+    "user": {
+      "id": "2",
+      "userMail": "onderalpselcuk@gmail.com",
+      "userName": "Onder Alp Selcuk"
+    }
+  },
+  {
+    "title": "deneme",
+    "barcode": "3433",
+    "description": "a\u00e7\u0131klama",
+    "vatRate": "20",
+    "sizeLists": [
+      {
+        "id": "1092702",
+        "nameOfSize": "",
+        "quantity": "584",
+        "alertLowStock": "22",
+        "stockCode": "hasta",
+        "dimensionalWeight": "33cm",
+        "listPrice": "128.0",
+        "listPriceCurrency": "USD",
+        "salePrice": "360.0",
+        "salePriceCurency": "TRY"
+      }
+    ],
+    "images": [
+      "https://robolink.com.tr/products/00020-403714294-29908image_0.jpg",
+      "https://robolink.com.tr/products/00020-403714294-22516image_1.jpg",
+      "https://robolink.com.tr/products/00020-403714294-28085image_2.jpg"
+    ],
+    "user": {
+      "id": "2",
+      "userMail": "onderalpselcuk@gmail.com",
+      "userName": "Onder Alp Selcuk"
+    }
+  },
+  {
+    "title": "a\u00e7\u0131k isin",
+    "barcode": "343341 242",
+    "description": "a\u00e7\u0131klama",
+    "vatRate": "20",
+    "sizeLists": [
+      {
+        "id": "77693075",
+        "nameOfSize": "",
+        "quantity": "22",
+        "alertLowStock": "22",
+        "stockCode": "agabab",
+        "dimensionalWeight": "30cm",
+        "listPrice": "238.0",
+        "listPriceCurrency": "EUR",
+        "salePrice": "233.0",
+        "salePriceCurency": "JPY"
+      }
+    ],
+    "images": [
+      "https://robolink.com.tr/products/00020-403714294-20349image_0.jpg",
+      "https://robolink.com.tr/products/00020-403714294-20686image_1.jpg",
+      "https://robolink.com.tr/products/00020-403714294-25020image_2.jpg",
+      "https://robolink.com.tr/products/00020-403714294-23077image_3.jpg"
+    ],
+    "user": {
+      "id": "2",
+      "userMail": "onderalpselcuk@gmail.com",
+      "userName": "Onder Alp Selcuk"
+    }
+  },
+  {
+    "title": "\u00e7ok zor",
+    "barcode": "343341 242451",
+    "description": "a\u00e7\u0131klama",
+    "vatRate": "20",
+    "sizeLists": [
+      {
+        "id": "16308657",
+        "nameOfSize": "",
+        "quantity": "22",
+        "alertLowStock": "368",
+        "stockCode": "stok 1 ",
+        "dimensionalWeight": "kajaba",
+        "listPrice": "25.0",
+        "listPriceCurrency": "USD",
+        "salePrice": "25.0",
+        "salePriceCurency": "TRY"
+      }
+    ],
+    "images": [],
+    "user": {
+      "id": "2",
+      "userMail": "onderalpselcuk@gmail.com",
+      "userName": "Onder Alp Selcuk"
+    }
+  },
+  {
+    "title": "\u00e7ok zor",
+    "barcode": "343341 242451",
+    "description": "a\u00e7\u0131klama",
+    "vatRate": "20",
+    "sizeLists": [
+      {
+        "id": "16308657",
+        "nameOfSize": "",
+        "quantity": "22",
+        "alertLowStock": "368",
+        "stockCode": "stok 1 ",
+        "dimensionalWeight": "kajaba",
+        "listPrice": "25.0",
+        "listPriceCurrency": "USD",
+        "salePrice": "25.0",
+        "salePriceCurency": "TRY"
+      }
+    ],
+    "images": [],
+    "user": {
+      "id": "2",
+      "userMail": "onderalpselcuk@gmail.com",
+      "userName": "Onder Alp Selcuk"
+    }
+  }
+]

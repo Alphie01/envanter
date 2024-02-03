@@ -4,6 +4,7 @@ import 'package:envanterimservetim/core/constants/theme.dart';
 import 'package:envanterimservetim/screens/homepage/component/introduce.dart';
 import 'package:envanterimservetim/screens/homepage/component/last_orders.dart';
 import 'package:envanterimservetim/screens/homepage/component/mostsellers.dart';
+import 'package:envanterimservetim/screens/homepage/component/page_scan_barcode.dart';
 import 'package:envanterimservetim/screens/homepage/component/salesByType.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
 import 'package:envanterimservetim/widgets/box_view.dart';
@@ -44,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   //⁡⁣⁣⁢top Header Animations⁡
   AnimationController? filterAnimation, headerAnimationController;
   Animation<double>? filterOpacity, filterTransform, headerAnimation;
-  Color iconColor = AppTheme.textColor;
+  Color iconColor = Colors.white;
 
   @override
   void initState() {
@@ -67,8 +68,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         offset = scrollController.offset;
       });
       if (scrollController.offset > 60) {
+        setState(() {
+          iconColor = AppTheme.textColor;
+        });
         headerAnimationController!.forward();
       } else {
+        setState(() {
+          iconColor = Colors.white;
+        });
         headerAnimationController!.reverse();
       }
     });
@@ -255,7 +262,7 @@ class StorageOfCompany extends StatelessWidget {
             ],
           ),
           Product.products.length == 0
-          //TODO init statics
+              //TODO init statics
               ? Container(
                   decoration: BoxDecoration(
                       color: AppTheme.background,
@@ -312,15 +319,10 @@ class StorageOfCompany extends StatelessWidget {
                           },
                         );
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: AppTheme.contrastColor1,
-                            borderRadius:
-                                BorderRadius.circular(paddingHorizontal)),
-                        padding: EdgeInsets.symmetric(
-                            vertical: paddingHorizontal / 2,
-                            horizontal: paddingHorizontal),
-                        child: Row(
+                      child: Box_View(
+                        color: AppTheme.contrastColor1.withOpacity(.6),
+                        horizontal: 0,
+                        boxInside: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             AppText(

@@ -90,6 +90,36 @@ class Product {
     return products.sublist(0, startIndex);
   }
 
+  static List<Product> getRandomObjects(int count) {
+    if (count >= products.length) {
+      // Liste eleman sayısından fazla sayıda isteniyorsa, listenin kendisini döndür
+      return products;
+    }
+
+    // Rastgele sayı üretmek için Random sınıfını kullan
+    Random random = Random();
+
+    // Liste üzerinde işlem yapmadan önce bir kopyasını oluştur
+    List<Product> copyList = List.from(products);
+
+    // Seçilecek elemanları tutacak bir liste oluştur
+    List<Product> selectedObjects = [];
+
+    // Belirtilen sayıda rastgele eleman seç
+    for (int i = 0; i < count; i++) {
+      // Rastgele bir indis seç
+      int randomIndex = random.nextInt(copyList.length);
+
+      // Seçilen elemanı listeye ekle
+      selectedObjects.add(copyList[randomIndex]);
+
+      // Seçilen elemanı kopya listeden kaldır
+      copyList.removeAt(randomIndex);
+    }
+
+    return selectedObjects;
+  }
+
   static int productCategoryCount(Categories searchedCategories) {
     int count = 0;
     if (searchedCategories.subCategoriesId != -1) {
@@ -129,22 +159,24 @@ class Product {
   }
 
   static void _createProductObject(Map response) {
-    products.add(Product(
-      barcode: response['barcode'],
-      title: response['title'],
-      category: response['categories'] != null
-          ? _initializeCategoryFromDatabase(response['categories'])
-          : null,
-      sizeLists: _sizeListsOfProducts(response['sizeLists']),
-      description: response['description'],
-      cargoCompanyId: '',
-      images: _listOfProductNetworkImages(response['images']),
-      vatRate: response['vatRate'],
-      adderUserid: response['user']['id'],
-      adderUserName: response['user']['userName'],
-      adderUserMail: response['user']['userMail'],
-    ));
+    products.add(productObject(response));
   }
+
+  static Product productObject(Map response) => Product(
+        barcode: response['barcode'],
+        title: response['title'],
+        category: response['categories'] != null
+            ? _initializeCategoryFromDatabase(response['categories'])
+            : null,
+        sizeLists: _sizeListsOfProducts(response['sizeLists']),
+        description: response['description'],
+        cargoCompanyId: '',
+        images: _listOfProductNetworkImages(response['images']),
+        vatRate: response['vatRate'],
+        adderUserid: response['user']['id'],
+        adderUserName: response['user']['userName'],
+        adderUserMail: response['user']['userMail'],
+      );
 
   static Product? findProductByBarcode(String scanedBarcode) {
     int findedProductByBarcode =
@@ -287,6 +319,18 @@ class SizeList {
         salePrice: salePrices,
         salePriceCurency: salePriceCurencys);
   }
+
+  static SizeList initSizelist(Map response) => SizeList(
+      id: int.parse(response['id']),
+      nameOfSize: response['nameOfSize'],
+      quantity: int.parse(response['quantity']),
+      stockCode: response['stockCode'],
+      dimensionalWeight: response['dimensionalWeight'],
+      listPrice: double.parse(response['listPrice']),
+      alertLowStock: int.parse(response['alertLowStock']),
+      listPriceCurrency: response['listPriceCurrency'],
+      salePrice: double.parse(response['salePrice']),
+      salePriceCurency: response['salePriceCurency']);
 
   static List<Map> createMapOfSizelist(List<SizeList> sizeLists) {
     /* 

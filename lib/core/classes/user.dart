@@ -9,6 +9,7 @@ class User {
   String userKAdi;
   String? userPassword;
   String userName;
+  String? token;
   String userMail;
 
   String? userPermissionLevel;
@@ -31,6 +32,7 @@ class User {
     this.userId,
     required this.userKAdi,
     this.userPassword,
+    this.token,
     required this.userMail,
     this.userPermissionLevel,
     this.userStartDate,
@@ -64,6 +66,7 @@ class User {
 
   static Future<bool> chekMailKey(Map<String, dynamic> data) async {
     Map returns = await HTTP_Requests.sendPostRequest(data);
+    print(returns);
     if (returns['id'] == 0) {
       SharedPref.addStringToSF(
           userToken, returns['kullanici']['kullanici_secretToken']);
@@ -75,6 +78,16 @@ class User {
       }
       userProfile = _createUserParamater(returns['kullanici'], path);
       biometrics = false;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<bool> resendMailCode(Map<String, dynamic> data) async {
+    Map returns = await HTTP_Requests.sendPostRequest(data);
+    print(returns);
+    if (returns['id'] == 0) {
       return true;
     } else {
       return false;
@@ -110,7 +123,10 @@ class User {
       userProfile = _createUserParamater(returns['kullanici'], path);
 
       //setting up Shops
+
       Shop.setAttendedShops(returns['shop']);
+      Shop.setInvitedShops(returns['invitedShops']);
+
       return true;
     } else {
       return false;
@@ -121,6 +137,7 @@ class User {
     List<String> _canPlatformList = [];
     return User(
         userId: returns['kullanici_id'],
+        token: returns['kullanici_secretToken'],
         userKAdi: '${returns['kullanici_ad']}',
         userPassword: '${returns['kullanici_password']}',
         userName: '${returns['kullanici_adsoyad']}',
@@ -186,6 +203,7 @@ class User {
       _users.add(
         User(
           userKAdi: element['kullanici_ad'],
+          userId: element['kullanici_id'],
           userMail: element['kullanici_mail'],
           userName: element['kullanici_adsoyad'],
         ),

@@ -5,6 +5,7 @@ import 'package:envanterimservetim/core/classes/shop.dart';
 import 'package:envanterimservetim/core/constants/sizeconfig.dart';
 import 'package:envanterimservetim/core/constants/theme.dart';
 import 'package:envanterimservetim/screens/homepage/component/fastProcess.dart';
+import 'package:envanterimservetim/screens/productScreen/component/simular_products.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
 import 'package:envanterimservetim/widgets/box_view.dart';
 import 'package:envanterimservetim/widgets/headerWidget.dart';
@@ -40,11 +41,13 @@ class _ProductPageState extends State<ProductPage>
   double topBarOpacity = 0.0, searchBarOpacity = .6;
 
   Product? _products;
+  List<Product>? randomProducts;
   @override
   void initState() {
     /* connectServer(); */
     setState(() {
       _products = Product.selectedProduct;
+      randomProducts = Product.getRandomObjects(3);
     });
 
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -63,6 +66,7 @@ class _ProductPageState extends State<ProductPage>
         headerAnimationController!.reverse();
       }
     });
+
     super.initState();
     widget.animationController!.forward();
   }
@@ -232,11 +236,61 @@ class _ProductPageState extends State<ProductPage>
                             AnaliticsOfProduct(
                               updatePage: widget.updatePage!,
                             ),
-                            Box_View(
-                                boxInside: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [AppText(text: 'Benzer Ürünler')],
-                            ))
+                            randomProducts!.isNotEmpty
+                                ? Column(
+                                    children: [
+                                      Box_View(
+                                        boxInside: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                AppLargeText(
+                                                    text: 'Benzer Ürünler'),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: paddingHorizontal,
+                                            vertical: paddingHorizontal * .5),
+                                        child: GridView.builder(
+                                          padding: paddingZero,
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 2,
+                                                  mainAxisSpacing:
+                                                      paddingHorizontal,
+                                                  crossAxisSpacing:
+                                                      paddingHorizontal,
+                                                  childAspectRatio: 1.5),
+                                          itemCount: randomProducts!.length,
+                                          shrinkWrap: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  _products =
+                                                      randomProducts![index];
+                                                  _scrollController.jumpTo(0);
+                                                });
+                                              },
+                                              child: SimularProducts(
+                                                simular: randomProducts![index],
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Container()
                           ],
                         ),
                       ),

@@ -59,7 +59,7 @@ class _ProductErrorsState extends State<ProductErrors> {
                   'Bu kısımda keşfettiğimiz ve düzeltmenizi gördüğümüz hataları-değişiklikleri görüntüleyebilirsiniz!',
             ),
           ),
-          Box_View(
+          /* Box_View(
             horizontal: 0,
             color: AppTheme.background,
             boxInside: Column(
@@ -194,7 +194,7 @@ class _ProductErrorsState extends State<ProductErrors> {
               ],
             ),
           ),
-          Box_View(
+           */Box_View(
             horizontal: 0,
             color: AppTheme.background,
             boxInside: Column(

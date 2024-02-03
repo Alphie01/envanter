@@ -3,6 +3,7 @@ import 'package:envanterimservetim/core/classes/user.dart';
 import 'package:envanterimservetim/core/constants/sizeconfig.dart';
 import 'package:envanterimservetim/core/constants/theme.dart';
 import 'package:envanterimservetim/screens/starting/loading/components/logoContainer.dart';
+import 'package:envanterimservetim/screens/starting/mail_comfimataion.dart';
 import 'package:envanterimservetim/screens/starting/register/register.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
 import 'package:envanterimservetim/widgets/box_view.dart';
@@ -29,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen>
       isLogedin = false,
       controlInternet = false;
   String mail = '', password = '';
+  PageController pageController = PageController();
   String error = '';
 
   @override
@@ -48,10 +50,19 @@ class _LoginScreenState extends State<LoginScreen>
   Future<void> checkUser() async {
     print('$mail - $password');
     Map user = await User.fetchUserbyMail(mail, password);
-
-    print(user);
     if (user['id'] == 0) {
-      widget.updatePage!(pageId: 94);
+      if (User.userProfile!.userStatus == UserStatus.approved) {
+        widget.updatePage!(pageId: 94);
+      } else if (User.userProfile!.userStatus == UserStatus.notApproved) {
+        pageController.nextPage(
+            duration: defaultDuration, curve: Curves.easeInOut);
+      } else {
+        setState(() {
+          error =
+              'Hesabınız Envanterim İş Hayatım kurallarına uygun davranışlar sergilemediği için askıya alınmıştır.';
+          isLoading = false;
+        });
+      }
       /* setState(() {
         isLogedin = !isLogedin;
       }); */
@@ -89,7 +100,8 @@ class _LoginScreenState extends State<LoginScreen>
                       color: AppBlackTheme.background,
                     ),
                     child: PageView(
-                      
+                      physics: NeverScrollableScrollPhysics(),
+                      controller: pageController,
                       children: [
                         Container(
                           child: connectionResults
@@ -176,7 +188,8 @@ class _LoginScreenState extends State<LoginScreen>
                                                                     .visibility
                                                                 : Icons
                                                                     .visibility_off,
-                                                            color: Colors.white,
+                                                            color: AppTheme
+                                                                .textColor,
                                                           ),
                                                         ),
                                                       )
@@ -445,7 +458,9 @@ class _LoginScreenState extends State<LoginScreen>
                         ),
                         GSOP_Mail_Comfirmation(
                           fetchedMap: {},
-                          updatePage: widget.updatePage!,
+                          updatePage: () {
+                            widget.updatePage!(pageId: 94);
+                          },
                         )
                       ],
                     ),

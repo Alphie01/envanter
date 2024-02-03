@@ -418,7 +418,7 @@ class _NewShopProductPageState extends State<NewShopProductPage>
                                                 child: AppText(
                                                     text: tekli
                                                         ? 'Çoklu Boyut'
-                                                        : 'Tek Boyut'),
+                                                        : 'Tek Boyut', color: Colors.white,),
                                               ),
                                             )
                                           ],
@@ -915,7 +915,7 @@ class _NewShopProductPageState extends State<NewShopProductPage>
                                                   child: Box_View(
                                                     horizontal: 0,
                                                     color:
-                                                        AppTheme.contrastColor1,
+                                                        AppTheme.contrastColor1.withOpacity(.6),
                                                     boxInside: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -1372,18 +1372,19 @@ class _NewShopProductPageState extends State<NewShopProductPage>
                                         curve: Curves.easeInOut);
                                   },
                                   child: Box_View(
-                                    color: AppTheme.contrastColor1,
+                                    color: AppTheme.contrastColor1.withOpacity(.6),
                                     boxInside: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         AppText(
                                           text: 'Devam Et',
-                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          
                                         ),
                                         FaIcon(
                                           FontAwesomeIcons.arrowRight,
-                                          color: Colors.white,
+                                          color: AppTheme.textColor
                                         )
                                       ],
                                     ),

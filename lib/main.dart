@@ -25,12 +25,18 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness:
-          !kIsWeb && Platform.isAndroid ? Brightness.dark : Brightness.light,
+      statusBarIconBrightness: AppTheme.background == AppBlackTheme.background
+          ? Brightness.dark
+          : Brightness.light,
+      statusBarBrightness: AppTheme.background == AppBlackTheme.background
+          ? Brightness.dark
+          : Brightness.light,
       systemNavigationBarColor: AppTheme.textColor,
       systemNavigationBarDividerColor: Colors.transparent,
-      systemNavigationBarIconBrightness: Brightness.dark,
+      systemNavigationBarIconBrightness:
+          AppTheme.background == AppBlackTheme.background
+              ? Brightness.dark
+              : Brightness.light,
     ));
     return MaterialApp(
       title: 'Flutter UI Templates',

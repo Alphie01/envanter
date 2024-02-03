@@ -16,6 +16,158 @@ use IS\PazarYeri\Trendyol\Helper\TrendyolException;
 
 use function PHPSTORM_META\type;
 
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+
+require 'mail/PHPMailer/src/Exception.php';
+require 'mail/PHPMailer/src/PHPMailer.php';
+require 'mail/PHPMailer/src/SMTP.php';
+
+
+function MailInfo($name, $code)
+{
+    return '<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>E-Posta Başlığı</title>
+    </head>
+    <body style="font-family: Arial, sans-serif; background-color: #f2f2f2;">
+    <table class="body-wrap" style=" box-sizing: border-box; font-size: 14px; width: 100%; background-color: transparent; margin: 0;">
+    <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+        <td style=" box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
+        <td class="container" width="600" style=" box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;" valign="top">
+            <div class="content" style=" box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">
+                <table class="main" width="100%" cellpadding="0" cellspacing="0" style=" box-sizing: border-box; font-size: 14px; border-radius: 7px; background-color: #fff; color: #495057; margin: 0; box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);" bgcolor="#fff">
+                    <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                        <td class="alert alert-warning" style=" box-sizing: border-box; font-size: 16px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 7px 7px 0 0; background-color: #556ee6; margin: 0; padding: 20px;" align="center" bgcolor="#71b6f9" valign="top">
+                        Envanterim İş Hayatımı Tercih Ettiğiniz İçin Teşekkürler
+                        </td>
+                    </tr>
+                    <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                        <td class="content-wrap" style=" box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;" valign="top">
+                            <table width="100%" cellpadding="0" cellspacing="0" style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                                <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td class="content-block" style=" box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                        Sevgili ' . $name . ' <br><br>
+                                        Envanterim İş Hayatım ailesine hoşgeldiniz. Emailinizi onayladıktan sonra ister kendi işletmenizi oluşturup kendi envanterinizi oluşturabilir, ister daha önceden bulunan işletmenin bünyesine girebilirsiniz.
+                                    </td>
+                                </tr>
+                                <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td class="content-block" style=" box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                        <b>Neden Email Doğrulaması?<b/><br>
+                                        En iyi hizmeti alabilmeniz için e-posta adresinizin gerçek olmasına ihtiyacımız var.
+                                    </td>
+                                </tr>
+                                <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td class="content-block" style=" box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                        <p style=" box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #34c38f; margin: 0; border-color: #34c38f; border-style: solid; border-width: 8px 16px;">' . $code . '</>
+                                    </td>
+                                </tr>
+                                <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td class="content-block" style=" box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                    Envanterim İş Hayatımı Tercih Ettiğiniz İçin Teşekkürler
+                                    </td>
+                                </tr>
+                                <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td class="content-block" style=" box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                        <b> Sevigilerle</b>
+                                        <p>Envanterim İş Hayatımı</p>
+                                    </td>
+                                </tr>
+    
+                                <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td class="content-block" style="text-align: center; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0;" valign="top">
+                                        © 2024 Alphie
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+    </tr>
+    </table>
+    </body>
+    </html>
+    ';
+}
+
+
+function InvitationMail($name, $companyName)
+{
+    return '<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>E-Posta Başlığı</title>
+    </head>
+    <body style="font-family: Arial, sans-serif; background-color: #f2f2f2;">
+    <table class="body-wrap" style=" box-sizing: border-box; font-size: 14px; width: 100%; background-color: transparent; margin: 0;">
+    <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+        <td style=" box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
+        <td class="container" width="600" style=" box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;" valign="top">
+            <div class="content" style=" box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">
+                <table class="main" width="100%" cellpadding="0" cellspacing="0" style=" box-sizing: border-box; font-size: 14px; border-radius: 7px; background-color: #fff; color: #495057; margin: 0; box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);" bgcolor="#fff">
+                    <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                        <td class="alert alert-warning" style=" box-sizing: border-box; font-size: 16px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 7px 7px 0 0; background-color: #556ee6; margin: 0; padding: 20px;" align="center" bgcolor="#71b6f9" valign="top">
+                        ' . $companyName . ' isimli şirket sizi işletmesine eklemek istiyor!
+                        </td>
+                    </tr>
+                    <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                        <td class="content-wrap" style=" box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;" valign="top">
+                            <table width="100%" cellpadding="0" cellspacing="0" style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                                <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td class="content-block" style=" box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                        Sevgili ' . $name . ' <br><br>
+                                        Envanterim İş Hayatım uygulamasında 
+                                    </td>
+                                </tr>
+                                
+                                <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td class="content-block" style=" box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                        <p style=" box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #34c38f; margin: 0; border-color: #34c38f; border-style: solid; border-width: 8px 16px;">Onayla</p>
+                                    </td>
+                                    <td class="content-block" style=" box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                        <p style=" box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #FC5050; margin: 0; border-color: #FC5050; border-style: solid; border-width: 8px 16px;">Reddet</p>
+                                    </td>
+                                </tr>
+                                <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td class="content-block" style=" box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                    Envanterim İş Hayatımı Tercih Ettiğiniz İçin Teşekkürler
+                                    </td>
+                                </tr>
+                                <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td class="content-block" style=" box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                        <b> Sevigilerle</b>
+                                        <p>Envanterim İş Hayatımı</p>
+                                    </td>
+                                </tr>
+    
+                                <tr style=" box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <td class="content-block" style="text-align: center; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0;" valign="top">
+                                        © 2024 Alphie
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+    </tr>
+    </table>
+    </body>
+    </html>
+    ';
+}
+
+
 $returns = [];
 
 
@@ -42,6 +194,16 @@ $error_basarisiz = array(
     'error_message' => 'Kaydınız Başarısız! Lütfen Tekrar Deneyiniz!'
 );
 
+
+$error_duplicated = array(
+    'id' => 5,
+    'error_message' => 'Daha önceden davet etmişsiniz. Davet ettiğiniz kullanıcı cevaplayacaktır'
+);
+
+$error_something = array(
+    'id' => 404,
+    'error_message' => 'Bir şeyler ters gitti! Lütfen sonra tekrar deneyiniz!'
+);
 
 $base_shop_permissions = array(
     'user_control' => [
@@ -87,6 +249,41 @@ function turkishToEnglish($text)
     return $text;
 }
 
+
+function sendMail($name, $email, $ret): bool
+{
+
+
+
+    $mail = new PHPMailer(true);
+    try {
+        // SMTP ayarlarını belirleyin
+        $mail->isSMTP();
+        $mail->Host       = 'mail.robolink.com.tr'; // SMTP sunucusu
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'welcome@robolink.com.tr'; // E-posta hesabınızın kullanıcı adı
+        $mail->Password   = 'N^Xlnxr1OuH*'; // E-posta hesabınızın şifresi
+        $mail->SMTPSecure = 'tls';
+        $mail->Port       = 587;
+        $mail->isHTML(true);
+        $mail->CharSet = 'UTF-8';
+        // Alıcı, konu ve mesaj içeriğini belirleyin
+        $mail->setFrom('welcome@robolink.com.tr', 'Envanterim İş Hayatım');
+        $mail->addAddress($email, $name);
+        $mail->Subject = 'Envanterim İş Hayatımdan bir bildiriminiz var!';
+        $mail->Body = $ret;
+
+        // E-postayı gönderin
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+
+        return false;
+    }
+}
+
+
+
 /* ********************* */
 /* 
 TODO User Post REQUESTS 
@@ -94,6 +291,8 @@ TODO User Post REQUESTS
 /* ********************* */
 
 if (isset($_POST['kullanici_register'])) {
+
+    print_r($_POSt);
     $random_mail_key = random_int(1000, 9999);
     $kullanici_yetki = 0;
     $token = bin2hex(random_bytes(16));
@@ -140,11 +339,17 @@ if (isset($_POST['kullanici_register'])) {
             'kullanici_yetki' => $kullanici_yetki
         ));
         if ($insert) {
-            $success = array(
-                'id' => 0,
-                'result' => $postArray
-            );
-            print_r(json_encode($success));
+            $bool = sendMail($_POST['kullanici_adsoyad'], $_POST['kullanici_mail'], MailInfo($name, $code));
+            if ($bool) {
+                $success = array(
+                    'id' => 0,
+                    'result' => $postArray
+                );
+                print_r(json_encode($success));
+            } else {
+
+                print_r(json_encode($error_something));
+            }
         } else {
             print_r(json_encode($error_basarisiz));
         }
@@ -152,6 +357,36 @@ if (isset($_POST['kullanici_register'])) {
         print_r(json_encode($error_usedMail));
     }
 }
+
+if (isset($_POST['resend_mail_key'])) {
+
+    $kullanici_mail = $_POST['kullanici_mail'];
+
+    $kullanicisor = $db->prepare("SELECT * FROM kullanici where kullanici_mail=:mail and kullanici_secretToken=:kullanici_secretToken ");
+    $kullanicisor->execute(array(
+        'mail' => $kullanici_mail,
+        'kullanici_secretToken' => $_POST['kullanici_secretToken']
+    ));
+
+    $say = $kullanicisor->rowCount();
+    $kullanicicek = $kullanicisor->fetch(PDO::FETCH_ASSOC);
+
+    if ($kullanicicek) {
+        $bool = sendMail($kullanicicek['kullanici_adsoyad'], $_POST['kullanici_mail'], MailInfo($name, $code));
+        if ($bool) {
+            $success = array(
+                'id' => 0,
+            );
+            print_r(json_encode($success));
+        } else {
+            print_r(json_encode($error_something));
+        }
+    } else {
+
+        print_r(json_encode($error_basarisiz));
+    }
+}
+
 
 
 if (isset($_POST['check_mail_key'])) {
@@ -195,6 +430,8 @@ if (isset($_POST['check_mail_key'])) {
 
 
 
+
+
 if (isset($_POST['fetchUserByMail'])) {
 
     $kullanici_mail = $_POST['kullanici_mail'];
@@ -212,6 +449,7 @@ if (isset($_POST['fetchUserByMail'])) {
     if ($kullanicicek) {
 
         $workingAreas = array();
+        $invitedAreas = array();
 
 
         $workerSor = $db->prepare("SELECT * FROM shop_workers where shop_workers_workerId=:shop_workers_workerId and worker_isApproved=1");
@@ -221,7 +459,7 @@ if (isset($_POST['fetchUserByMail'])) {
         ));
         while ($workerCek = $workerSor->fetch(PDO::FETCH_ASSOC)) {
 
-            $platformsor = $db->prepare("SELECT shop_id, shop_type, shop_name, shop_image, shop_token, shop_permissions FROM shop where shop_id=:shop_id");
+            $platformsor = $db->prepare("SELECT shop_id, shop_owner_Id, shop_type, shop_name, shop_image,shop_token, shop_permissions FROM shop where shop_id=:shop_id");
             $platformsor->execute(array(
 
                 'shop_id' => $workerCek['shop_id']
@@ -234,10 +472,30 @@ if (isset($_POST['fetchUserByMail'])) {
 
 
 
+
+        $worker_invite_Sor = $db->prepare("SELECT * FROM shop_workers where shop_workers_workerId=:shop_workers_workerId and worker_isApproved=2");
+        $worker_invite_Sor->execute(array(
+
+            'shop_workers_workerId' => $kullanicicek['kullanici_id']
+        ));
+        while ($worker_invite_Cek = $worker_invite_Sor->fetch(PDO::FETCH_ASSOC)) {
+
+            $platformsor = $db->prepare("SELECT shop_id, shop_type, shop_name, shop_image,shop_token, shop_permissions FROM shop where shop_id=:shop_id");
+            $platformsor->execute(array(
+
+                'shop_id' => $worker_invite_Cek['shop_id']
+            ));
+            $platformcek = $platformsor->fetch(PDO::FETCH_ASSOC);
+            $platformcek['shop_permissionLevel'] = $worker_invite_Cek['shop_workers_permissonLevel'];
+
+            array_push($invitedAreas, $platformcek);
+        }
+
         $returns = array(
             'id' => 0,
             'kullanici' => $kullanicicek,
-            'shop' => $workingAreas
+            'shop' => $workingAreas,
+            'invitedShops' => $invitedAreas
         );
 
 
@@ -265,6 +523,7 @@ if (isset($_POST['fetchUserByToken'])) {
     if ($kullanicicek) {
 
         $workingAreas = array();
+        $invitedAreas = array();
 
 
         $workerSor = $db->prepare("SELECT * FROM shop_workers where shop_workers_workerId=:shop_workers_workerId and worker_isApproved=1");
@@ -274,7 +533,7 @@ if (isset($_POST['fetchUserByToken'])) {
         ));
         while ($workerCek = $workerSor->fetch(PDO::FETCH_ASSOC)) {
 
-            $platformsor = $db->prepare("SELECT shop_id, shop_type, shop_name, shop_image,shop_token, shop_permissions FROM shop where shop_id=:shop_id");
+            $platformsor = $db->prepare("SELECT shop_id, shop_owner_Id, shop_type, shop_name, shop_image,shop_token, shop_permissions FROM shop where shop_id=:shop_id");
             $platformsor->execute(array(
 
                 'shop_id' => $workerCek['shop_id']
@@ -287,10 +546,30 @@ if (isset($_POST['fetchUserByToken'])) {
 
 
 
+
+        $worker_invite_Sor = $db->prepare("SELECT * FROM shop_workers where shop_workers_workerId=:shop_workers_workerId and worker_isApproved=2");
+        $worker_invite_Sor->execute(array(
+
+            'shop_workers_workerId' => $kullanicicek['kullanici_id']
+        ));
+        while ($worker_invite_Cek = $worker_invite_Sor->fetch(PDO::FETCH_ASSOC)) {
+
+            $platformsor = $db->prepare("SELECT shop_id, shop_type, shop_name, shop_image,shop_token, shop_permissions FROM shop where shop_id=:shop_id");
+            $platformsor->execute(array(
+
+                'shop_id' => $worker_invite_Cek['shop_id']
+            ));
+            $platformcek = $platformsor->fetch(PDO::FETCH_ASSOC);
+            $platformcek['shop_permissionLevel'] = $worker_invite_Cek['shop_workers_permissonLevel'];
+
+            array_push($invitedAreas, $platformcek);
+        }
+
         $returns = array(
             'id' => 0,
             'kullanici' => $kullanicicek,
-            'shop' => $workingAreas
+            'shop' => $workingAreas,
+            'invitedShops' => $invitedAreas
         );
 
 
@@ -358,6 +637,108 @@ if (isset($_POST['initShopByToken'])) {
 }
 
 
+
+
+if (isset($_POST['answerInvitation'])) {
+
+
+    $kaydet = $db->prepare("UPDATE shop_workers SET worker_isApproved=:worker_isApproved
+            WHERE shop_id=:shop_id and shop_workers_workerId=:shop_workers_workerId");
+    $update = $kaydet->execute(array(
+        'shop_workers_workerId' => $_POST['answeredUser_id'],
+        'worker_isApproved' => $_POST['answer'],
+        'shop_id' => $_POST['shop_id']
+    ));
+
+    if ($update) {
+        $returns = array(
+            'id' => 0,
+        );
+        print_r(json_encode($returns));
+    } else {
+        # code...
+        print_r(json_encode($error_basarisiz));
+    }
+}
+
+if (isset($_POST['leaveCompany'])) {
+
+
+    $kaydet = $db->prepare("UPDATE shop_workers SET worker_isApproved=:worker_isApproved
+            WHERE shop_id=:shop_id and shop_workers_workerId=:shop_workers_workerId");
+    $update = $kaydet->execute(array(
+        'shop_workers_workerId' => $_POST['answeredUser_id'],
+        'worker_isApproved' => $_POST['answer'],
+        'shop_id' => $_POST['shop_id']
+    ));
+
+    if ($update) {
+        $returns = array(
+            'id' => 0,
+        );
+        print_r(json_encode($returns));
+    } else {
+        # code...
+        print_r(json_encode($error_basarisiz));
+    }
+}
+
+if (isset($_POST['sendInvitation'])) {
+
+
+    $initShop = $db->prepare("SELECT shop_name FROM shop where shop_id=:shop_id");
+    $initShop->execute(array(
+        'shop_id' => $_POST['shop_id']
+    ));
+    $initShopCek = $initShop->fetch(PDO::FETCH_ASSOC);
+
+
+    $kullanicisor = $db->prepare("SELECT * FROM kullanici where kullanici_id=:kullanici_id");
+    $kullanicisor->execute(array(
+        'kullanici_id' => $_POST['user_id']
+    ));
+    $kullanicicek = $kullanicisor->fetch(PDO::FETCH_ASSOC);
+
+    $workersor = $db->prepare("SELECT * FROM shop_workers where shop_workers_workerId=:shop_workers_workerId and shop_id=:shop_id");
+    $workersor->execute(array(
+        'shop_id' => $_POST['shop_id'],
+        'shop_workers_workerId' => $_POST['answeredUser_id']
+    ));
+    $say = $workersor->rowCount();
+    $workercek = $workersor->fetch(PDO::FETCH_ASSOC);
+
+
+    if ($say == 0) {
+        $kaydet = $db->prepare("INSERT INTO shop_workers SET
+        worker_whoApproved=:worker_whoApproved, worker_isApproved=:worker_isApproved
+        , shop_id=:shop_id, shop_workers_workerId=:shop_workers_workerId");
+        $update = $kaydet->execute(array(
+            'worker_whoApproved' => $_POST['user_id'],
+            'shop_workers_workerId' => $_POST['answeredUser_id'],
+            'worker_isApproved' => $_POST['answer'],
+            'shop_id' => $_POST['shop_id']
+        ));
+
+        if ($update) {
+            $ret = InvitationMail($kullanicicek['kullanici_adsoyad'], $initShopCek['shop_name']);
+            $bool = sendMail($kullanicicek['kullanici_adsoyad'], $kullanicicek['kullanici_mail'], $ret);
+            if ($bool) {
+                $success = array(
+                    'id' => 0,
+                );
+                print_r(json_encode($success));
+            } else {
+                print_r(json_encode($error_something));
+            }
+        } else {
+            # code...
+            print_r(json_encode($error_basarisiz));
+        }
+    } else {
+        print_r(json_encode($error_duplicated));
+    }
+}
+
 if (isset($_POST['answerWaitingWorker'])) {
 
 
@@ -414,14 +795,19 @@ if (isset($_POST['getInfoWhoWorker'])) {
 if (isset($_POST['getUserByMails'])) {
 
     $keywords = $_POST['kullanici_mail'];
-    $userByMailSor = $db->prepare("SELECT kullanici_id, kullanici_ad, kullanici_adsoyad, kullanici_mail, kullanici_resim FROM kullanici where kullanici_mail LIKE '%$keywords%' ORDER BY kullanici_id LIMIT 6");
-    $userByMailSor->execute(array());
+    $userByMailSor = $db->prepare("
+        SELECT k.kullanici_id, k.kullanici_ad, k.kullanici_adsoyad, k.kullanici_mail, k.kullanici_resim 
+        FROM kullanici k 
+        LEFT JOIN shop_workers sw ON k.kullanici_id = sw.shop_workers_workerId AND sw.shop_id = :shop_id
+        WHERE k.kullanici_mail LIKE :keywords AND sw.shop_workers_workerId IS NULL
+        ORDER BY k.kullanici_id 
+        LIMIT 6
+    ");
+    $userByMailSor->execute(array(':keywords' => "%$keywords%", ':shop_id' => $_POST['shop_id']));
     $say = $userByMailSor->rowCount();
     $userByMailCek = $userByMailSor->fetchAll(PDO::FETCH_ASSOC);
 
-    //TODO fetch not Contains Same Company
     if ($say > 0) {
-
         $returns = array(
             'id' => 0,
             'UserByMails' => $userByMailCek
@@ -431,6 +817,7 @@ if (isset($_POST['getUserByMails'])) {
         print_r(json_encode($error_basarisiz));
     }
 }
+
 
 
 /* 
@@ -651,6 +1038,27 @@ if (isset($_POST['joinExistedShop'])) {
     }
 }
 
+if (isset($_POST['shop_changeUserPermission'])) {
+
+    $kaydet = $db->prepare("UPDATE shop_workers SET
+        shop_workers_permissonLevel=:shop_workers_permissonLevel
+        WHERE shop_id=:shop_id and shop_workers_workerId=:shop_workers_workerId");
+    $update = $kaydet->execute(array(
+
+        'shop_id' => $_POST['shop_id'],
+        'shop_workers_workerId' => $_POST['changed_userId'],
+        'shop_workers_permissonLevel' => $_POST['permissionLevel']
+    ));
+
+    if ($update) {
+        $returns = array(
+            'id' => 0,
+        );
+        print_r(json_encode($returns));
+    } else {
+        print_r(json_encode($error_basarisiz));
+    }
+}
 
 if (isset($_POST['shop_buyPackage'])) {
 
