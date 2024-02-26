@@ -356,12 +356,19 @@ class SizeList {
 }
 
 class ParaBirimi {
-  final String ad;
-  final String kod;
+  final String ad, kod;
+  final int direction;
+  final double? buy, sell;
 
-  ParaBirimi({required this.ad, required this.kod});
+  ParaBirimi({
+    required this.ad,
+    required this.kod,
+    this.buy,
+    this.direction = 0,
+    this.sell,
+  });
   static List<ParaBirimi> paraBirimleri = [
-    ParaBirimi(ad: "Türk Lirası", kod: "TRY"),
+    /* ParaBirimi(ad: "Türk Lirası", kod: "TRY"),
     ParaBirimi(ad: "ABD Doları", kod: "USD"),
     ParaBirimi(ad: "Euro", kod: "EUR"),
     ParaBirimi(ad: "Japon Yeni", kod: "JPY"),
@@ -390,8 +397,32 @@ class ParaBirimi {
     ParaBirimi(ad: "Şili Pesosu", kod: "CLP"),
     ParaBirimi(ad: "İsrail Şekeli", kod: "ILS"),
     ParaBirimi(ad: "Katar Riyali", kod: "QAR"),
-    ParaBirimi(ad: "Arjantin Pesosu", kod: "ARS"),
+    ParaBirimi(ad: "Arjantin Pesosu", kod: "ARS"), */
   ];
+  static Future<bool> fetchCurrenciesFromDatabase() async {
+    List<String> getData = [
+      'currency=ok',
+      'user_token=${User.userProfile!.token}'
+    ];
+    List data = await HTTP_Requests.getHttp(getData);
+    if (data.isNotEmpty) {
+      paraBirimleri = [];
+      for (var element in data) {
+        paraBirimleri.add(_paraBirimi(element));
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static ParaBirimi _paraBirimi(Map response) => ParaBirimi(
+        ad: response['currency_meta_name'],
+        kod: response['currency_meta_fetchCode'],
+        buy: double.parse(response['currency_meta_buy']),
+        sell: double.parse(response['currency_meta_sell']),
+        direction: int.parse(response['currency_meta_buy_direction']),
+      );
 }
 
 class Categories {

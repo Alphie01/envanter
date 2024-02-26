@@ -4,13 +4,19 @@ import 'package:envanterimservetim/core/constants/sizeconfig.dart';
 import 'package:envanterimservetim/core/constants/theme.dart';
 import 'package:envanterimservetim/core/sharedPref/sharedpreferences.dart';
 import 'package:envanterimservetim/core/sharedPref/sharedprefkeynames.dart';
+import 'package:envanterimservetim/screens/bill/billing.dart';
 import 'package:envanterimservetim/screens/essencial/drawer.dart';
 import 'package:envanterimservetim/screens/homepage/homepage.dart';
 import 'package:envanterimservetim/screens/newProduct/newproduct.dart';
 import 'package:envanterimservetim/screens/newTeammate/newTeammate.dart';
+import 'package:envanterimservetim/screens/order/orderScreen.dart';
 import 'package:envanterimservetim/screens/productScreen/product.dart';
+import 'package:envanterimservetim/screens/profile/edit_profie/edit_profile.dart';
 import 'package:envanterimservetim/screens/profile/my_profile/my_profile.dart';
 import 'package:envanterimservetim/screens/settings/settingsScreen.dart';
+import 'package:envanterimservetim/screens/settings/sub_pages/account_privacy.dart';
+import 'package:envanterimservetim/screens/settings/sub_pages/change_password.dart';
+import 'package:envanterimservetim/screens/settings/sub_pages/data_saver.dart';
 
 import 'package:envanterimservetim/screens/starting/appInfo/appInfo.dart';
 import 'package:envanterimservetim/screens/starting/loading/loading.dart';
@@ -65,12 +71,7 @@ class _AppNavigatorScreenState extends State<AppNavigatorScreen>
   }
 
   Future<void> scanNormalBarcode() async {
-    String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
-      '#00FFFFFF', // Tarama ekranının arka plan rengi
-      'İptal', // İptal butonu metni
-      true, // Kamera flaşını kullanma
-      ScanMode.BARCODE, // Sadece barkodları tara
-    );
+    String barcodeScanResult = await BarcodeReader.scanBarcode();
 
     if (barcodeScanResult != '-1') {
       if (Product.findProductByBarcode(barcodeScanResult) != null) {
@@ -84,12 +85,7 @@ class _AppNavigatorScreenState extends State<AppNavigatorScreen>
   }
 
   Future<void> scanQRBarcode() async {
-    String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
-      '#00FFFFFF', // Tarama ekranının arka plan rengi
-      'İptal', // İptal butonu metni
-      true, // Kamera flaşını kullanma
-      ScanMode.QR, // Sadece barkodları tara
-    );
+    String barcodeScanResult = await BarcodeReader.scanQRBarcode();
 
     if (barcodeScanResult != '-1') {
       if (Product.findProductByBarcode(barcodeScanResult) != null) {
@@ -99,6 +95,14 @@ class _AppNavigatorScreenState extends State<AppNavigatorScreen>
       } else {
         _showAlertDialogFindedBarcode(context, barcodeScanResult);
       }
+    }
+  }
+
+  Future<void> scanQRBill() async {
+    String barcodeScanResult = await BarcodeReader.scanQRBarcode();
+
+    if (barcodeScanResult != '-1') {
+      print(barcodeScanResult);
     }
   }
 
@@ -162,6 +166,12 @@ class _AppNavigatorScreenState extends State<AppNavigatorScreen>
       AppTheme.setDarkTheme();
       setState(() {
         darkTheme = true;
+      });
+    }
+
+    if (SharedPref.getBoolValuesSF(dataSaverMode)) {
+      setState(() {
+        AppTheme.dataSaverMode = true;
       });
     }
 
@@ -247,7 +257,7 @@ class _AppNavigatorScreenState extends State<AppNavigatorScreen>
 
         case 30:
           setState(() {
-            currIndex = 3;
+            currIndex = 4;
             bottombar = true;
             tabBody = MainSettingsPage(
               scaffoldKey: scaffoldKey,
@@ -259,9 +269,80 @@ class _AppNavigatorScreenState extends State<AppNavigatorScreen>
 
         case 31:
           setState(() {
-            currIndex = 3;
+            currIndex = 4;
             bottombar = true;
             tabBody = MyProfile(
+              scaffoldKey: scaffoldKey,
+              animationController: animationController,
+              updatePage: _updateBar,
+            );
+          });
+          break;
+        case 32:
+          setState(() {
+            currIndex = 4;
+            bottombar = true;
+            tabBody = EditProfile(
+              scaffoldKey: scaffoldKey,
+              animationController: animationController,
+              updatePage: _updateBar,
+            );
+          });
+          break;
+
+        case 33:
+          setState(() {
+            currIndex = 4;
+            bottombar = true;
+            tabBody = ChangePassword(
+              scaffoldKey: scaffoldKey,
+              animationController: animationController,
+              updatePage: _updateBar,
+            );
+          });
+          break;
+
+        case 34:
+          setState(() {
+            currIndex = 4;
+            bottombar = true;
+            tabBody = AccountPrivacy(
+              scaffoldKey: scaffoldKey,
+              animationController: animationController,
+              updatePage: _updateBar,
+            );
+          });
+          break;
+
+        case 44:
+          setState(() {
+            currIndex = 4;
+            bottombar = true;
+            tabBody = DataSaver(
+              scaffoldKey: scaffoldKey,
+              animationController: animationController,
+              updatePage: _updateBar,
+            );
+          });
+          break;
+
+        case 60:
+          setState(() {
+            currIndex = 2;
+            bottombar = true;
+            tabBody = OrderScreen(
+              scaffoldKey: scaffoldKey,
+              animationController: animationController,
+              updatePage: _updateBar,
+            );
+          });
+          break;
+
+        case 70:
+          setState(() {
+            currIndex = 3;
+            bottombar = true;
+            tabBody = BillingScreen(
               scaffoldKey: scaffoldKey,
               animationController: animationController,
               updatePage: _updateBar,
@@ -373,7 +454,11 @@ class _AppNavigatorScreenState extends State<AppNavigatorScreen>
                     color: AppTheme.textColor,
                   ),
                   FaIcon(
-                    FontAwesomeIcons.qrcode,
+                    FontAwesomeIcons.plus,
+                    color: AppTheme.textColor,
+                  ),
+                  FaIcon(
+                    FontAwesomeIcons.fileInvoice,
                     color: AppTheme.textColor,
                   ),
                   FaIcon(
@@ -525,9 +610,12 @@ class _AppNavigatorScreenState extends State<AppNavigatorScreen>
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    if (!Shop.selectedShop!.shopPermissions
+                                    /* print(Shop.selectedShop!.shopPermissions
+                                        .shop_can_sell_products); */
+                                    if (Shop.selectedShop!.shopPermissions
                                         .shop_can_sell_products) {
-                                      showAdsOfApp(context);
+                                      _updateBar(pageId: 60);
+                                      Navigator.pop(context);
                                     }
                                   },
                                   child: Container(
@@ -546,6 +634,24 @@ class _AppNavigatorScreenState extends State<AppNavigatorScreen>
                                     ),
                                   ),
                                 ),
+                                GestureDetector(
+                                  onTap: scanQRBill,
+                                  child: Container(
+                                    padding: EdgeInsets.all(paddingHorizontal),
+                                    child: Row(
+                                      children: [
+                                        FaIcon(FontAwesomeIcons.qrcode,
+                                            color: AppTheme.textColor),
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              left: paddingHorizontal),
+                                          child: AppText(
+                                              text: 'Yeni Fatura QR Kodu Tara'),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           );
@@ -553,8 +659,10 @@ class _AppNavigatorScreenState extends State<AppNavigatorScreen>
                       );
 
                       break;
-
                     case 3:
+                      _updateBar(pageId: 70);
+                      break;
+                    case 4:
                       _updateBar(pageId: 30);
                       break;
 

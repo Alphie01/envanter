@@ -5,6 +5,7 @@ import 'package:envanterimservetim/core/constants/theme.dart';
 import 'package:envanterimservetim/screens/starting/loading/components/logoContainer.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
 import 'package:envanterimservetim/widgets/box_view.dart';
+import 'package:envanterimservetim/widgets/loadingCircular.dart';
 import 'package:envanterimservetim/widgets/networkImage.dart';
 import 'package:envanterimservetim/widgets/textfield.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +32,7 @@ class _SelectExistedCompanyState extends State<SelectExistedCompany> {
   Shop? _selectedExisted;
   String exception = '';
   Future<void> scanQRBarcode() async {
-    String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
-      '#00FFFFFF', // Tarama ekranının arka plan rengi
-      'İptal', // İptal butonu metni
-      true, // Kamera flaşını kullanma
-      ScanMode.QR, // Sadece barkodları tara
-    );
+    String barcodeScanResult = await BarcodeReader.scanQRBarcode();
 
     if (barcodeScanResult != '-1') {
       _fetchFromServer(barcodeScanResult);
@@ -110,13 +106,7 @@ class _SelectExistedCompanyState extends State<SelectExistedCompany> {
                 ),
               ),
               isFetching
-                  ? Center(
-                      child: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: CircularProgressIndicator(),
-                      ),
-                    )
+                  ? LoadingCircular()
                   : isResulted
                       ? Box_View(
                           boxInside: SingleChildScrollView(

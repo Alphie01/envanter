@@ -3,6 +3,7 @@ import 'package:envanterimservetim/core/classes/user.dart';
 import 'package:envanterimservetim/core/constants/sizeconfig.dart';
 import 'package:envanterimservetim/core/constants/theme.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
+import 'package:envanterimservetim/widgets/loadingCircular.dart';
 import 'package:envanterimservetim/widgets/networkImage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -140,12 +141,7 @@ class _AdsOfAppState extends State<AdsOfApp> {
                             ),
                             Shop.selectedShop!.userPermissionLevel != 0
                                 ? isProcessing
-                                    ? Center(
-                                        child: Container(
-                                        height: 50,
-                                        width: 50,
-                                        child: CircularProgressIndicator(),
-                                      ))
+                                    ? LoadingCircular()
                                     : GridView.count(
                                         shrinkWrap: true,
                                         physics: NeverScrollableScrollPhysics(),

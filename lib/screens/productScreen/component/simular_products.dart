@@ -21,7 +21,8 @@ class SimularProducts extends StatelessWidget {
           NetworkContainer(
             imageUrl: simular.images!.length != 0
                 ? simular.images!.first
-                : NetworkImage('http://robolink.com.tr/products/products.png'),
+                : NetworkImage(
+                    'https://dev.elektronikey.com/products/products.png'),
           ),
           Container(
             padding: EdgeInsets.all(paddingHorizontal),

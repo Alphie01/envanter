@@ -3,7 +3,8 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:envanterimservetim/core/classes/brand.dart';
+import 'package:envanterimservetim/core/classes/company.dart';
+import 'package:envanterimservetim/core/classes/siparis.dart';
 import 'package:envanterimservetim/core/classes/notifications.dart';
 import 'package:envanterimservetim/core/classes/product.dart';
 import 'package:envanterimservetim/core/classes/user.dart';
@@ -22,6 +23,7 @@ class Shop {
   List<User> shopWorkers, waitingApprove;
   final int shopPrivacy;
   final ShopPermissions shopPermissions;
+  Company? companyInfo;
 
   Shop({
     required this.shop_id,
@@ -30,6 +32,7 @@ class Shop {
     required this.shopPermissions,
     required this.shopType,
     this.userPermissionLevel,
+    this.companyInfo,
     this.shopPrivacy = 0,
     this.shop_token,
     this.shop_desc,
@@ -81,8 +84,6 @@ class Shop {
   }
 
   static Future<bool> shop_init() async {
-    //TODO statistic INIT
-
     String token = selectedShop!.shop_token!;
 
     Map<String, dynamic> data = {
@@ -95,6 +96,7 @@ class Shop {
 
     if (returns['id'] == 0) {
       clearShopDatas();
+      ParaBirimi.fetchCurrenciesFromDatabase();
       Product.initilizeProductsFromDatabase(returns['products']);
       if (returns['workers'] != []) {
         _setShopWorkers(returns['workers']);
@@ -109,7 +111,7 @@ class Shop {
         Notifications.initilazeNotifications(returns['notification']);
       }
       if (returns['shop_sells'] != []) {
-        Siparis.initilizeOrdersFromDatabase(returns['shop_sells']);
+        /* Siparis.initilizeOrdersFromDatabase(returns['shop_sells']); */
       }
 
       return true;
@@ -261,7 +263,7 @@ class Shop {
 
   static void clearShopDatas() {
     Product.clearShopProduct();
-    Siparis.clearSiparisList();
+    /* Siparis.clearSiparisList(); */
     Categories.clearCategories();
     Notifications.notificationClear();
   }

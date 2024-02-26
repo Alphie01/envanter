@@ -170,7 +170,7 @@ class _ProductPageState extends State<ProductPage>
                                     )
                                   : const NetworkContainer(
                                       imageUrl: NetworkImage(
-                                          'http://robolink.com.tr/products/products.png'),
+                                          'https://dev.elektronikey.com/products/products.png'),
                                     ),
                             ),
                             Box_View(
@@ -507,6 +507,7 @@ class _SizeOfElementState extends State<SizeOfElement> {
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,
+      padding: paddingZero,
       physics: NeverScrollableScrollPhysics(),
       children: [
         widget.productSizeList.length == 1

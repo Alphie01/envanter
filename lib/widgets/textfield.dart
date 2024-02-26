@@ -17,22 +17,27 @@ class CustomTextfield extends StatelessWidget {
       this.keyboardType = TextInputType.text,
       this.align = TextAlign.start,
       this.color,
+      this.prefix,
       this.controller,
       this.onChange,
       this.focusNode,
       this.borderAvaliable = true,
-      this.inputFormatters});
+      this.inputFormatters,
+      this.value,
+      this.disabled = false});
 
   final TextInputType keyboardType;
   final TextEditingController? controller;
   final InputDecoration? inputDecoration;
-  final bool isLast, obscureText, borderAvaliable;
+  final bool isLast, obscureText, borderAvaliable, disabled;
   final double size;
   final String? hintText;
   final Color? color;
   final TextAlign align;
+  final String? value;
   final FontStyle fontStyle;
   final FontWeight fontWeight;
+  final Widget? prefix;
   final int? maxLineCount;
   final Function(String)? onChange;
   final FocusNode? focusNode;
@@ -40,10 +45,12 @@ class CustomTextfield extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       focusNode: focusNode,
+      initialValue: value,
       controller: controller,
       obscureText: obscureText,
+      readOnly: disabled,
       keyboardType: keyboardType,
       inputFormatters: [],
       textInputAction: isLast ? TextInputAction.done : TextInputAction.next,
@@ -61,6 +68,7 @@ class CustomTextfield extends StatelessWidget {
       maxLines: maxLineCount,
       decoration: inputDecoration ??
           InputDecoration(
+            prefix: prefix,
             hintText: hintText,
             hintStyle: TextStyle(
                 color: color ?? AppTheme.textColor.withOpacity(.6),

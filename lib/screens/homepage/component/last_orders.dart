@@ -1,4 +1,4 @@
-import 'package:envanterimservetim/core/classes/brand.dart';
+import 'package:envanterimservetim/core/classes/siparis.dart';
 import 'package:envanterimservetim/core/classes/product.dart';
 import 'package:envanterimservetim/core/constants/sizeconfig.dart';
 import 'package:envanterimservetim/core/constants/theme.dart';
@@ -29,13 +29,13 @@ class LastOrders extends StatelessWidget {
               children: [AppLargeText(text: 'Son Siparişler')],
             ),
           ),
-          Siparis.lastSiparis.isEmpty
+          OrderedProduct.lastOrderedProduct.isEmpty
               //TODO init Last Orders
               ? Container(
                   decoration: BoxDecoration(
                       color: AppTheme.background,
                       borderRadius: BorderRadius.circular(paddingHorizontal)),
-                  height: 250,
+                  height: 250,padding: EdgeInsets.symmetric(horizontal: paddingHorizontal*3),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -59,10 +59,11 @@ class LastOrders extends StatelessWidget {
                   shrinkWrap: true,
                   padding: paddingZero,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: Siparis.lastSiparis.length,
+                  itemCount: OrderedProduct.lastOrderedProduct.length,
                   itemBuilder: (ctx, index) {
-                    Siparis _siparis = Siparis.lastSiparis[index];
-                    return Siparis_Overview(
+                    OrderedProduct _siparis =
+                        OrderedProduct.lastOrderedProduct[index];
+                    return OrderedProduct_Overview(
                       siparis: _siparis,
                     );
                   },
@@ -73,13 +74,13 @@ class LastOrders extends StatelessWidget {
   }
 }
 
-class Siparis_Overview extends StatelessWidget {
-  const Siparis_Overview({
+class OrderedProduct_Overview extends StatelessWidget {
+  const OrderedProduct_Overview({
     super.key,
     required this.siparis,
   });
 
-  final Siparis siparis;
+  final OrderedProduct siparis;
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +100,7 @@ class Siparis_Overview extends StatelessWidget {
               imageUrl: siparis.product.images!.isNotEmpty
                   ? siparis.product.images!.first
                   : const NetworkImage(
-                      'http://robolink.com.tr/products/products.png'),
+                      'https://dev.elektronikey.com/products/products.png'),
             ),
           ),
           Expanded(

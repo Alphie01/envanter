@@ -298,8 +298,8 @@ class _StockPageState extends State<StockPage> with TickerProviderStateMixin {
                                                                   child: FaIcon(
                                                                     FontAwesomeIcons
                                                                         .trash,
-                                                                    color: AppTheme
-                                                                        .textColor,
+                                                                    color: Colors
+                                                                        .white,
                                                                   ),
                                                                 )
                                                         ],
@@ -475,63 +475,91 @@ class _StockPageState extends State<StockPage> with TickerProviderStateMixin {
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: paddingHorizontal),
-                                    child: GridView.builder(
-                                      shrinkWrap: true,
-                                      padding: paddingZero,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 2,
-                                              mainAxisSpacing:
-                                                  paddingHorizontal / 2,
-                                              crossAxisSpacing:
-                                                  paddingHorizontal / 2,
-                                              childAspectRatio: .75),
-                                      itemCount: showAllProducts
-                                          ? _products.length
-                                          : _products.length > 10
-                                              ? 10
-                                              : _products.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            Product.setSelectedProduct(
-                                                _products[index]);
-                                            widget.updatePage!(pageId: 11);
-                                          },
-                                          child: ProductOrderContainer(
-                                            product: _products[index],
+                                  Product.products.isNotEmpty
+                                      ? Column(
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: paddingHorizontal),
+                                              child: GridView.builder(
+                                                shrinkWrap: true,
+                                                padding: paddingZero,
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                gridDelegate:
+                                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                                        crossAxisCount: 2,
+                                                        mainAxisSpacing:
+                                                            paddingHorizontal /
+                                                                2,
+                                                        crossAxisSpacing:
+                                                            paddingHorizontal /
+                                                                2,
+                                                        childAspectRatio: .75),
+                                                itemCount: showAllProducts
+                                                    ? _products.length
+                                                    : _products.length > 10
+                                                        ? 10
+                                                        : _products.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      Product
+                                                          .setSelectedProduct(
+                                                              _products[index]);
+                                                      widget.updatePage!(
+                                                          pageId: 11);
+                                                    },
+                                                    child:
+                                                        ProductOrderContainer(
+                                                      product: _products[index],
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  showAllProducts = true;
+                                                });
+                                              },
+                                              child: Container(
+                                                width: double.maxFinite,
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 10),
+                                                decoration: BoxDecoration(
+                                                    color:
+                                                        AppTheme.contrastColor1,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            paddingHorizontal)),
+                                                child: AppText(
+                                                  align: TextAlign.center,
+                                                  fontWeight: FontWeight.bold,
+                                                  text: 'Daha Fazlasına Gözat!',
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      : Box_View(
+                                          horizontal: 0,
+                                          color: AppTheme.background,
+                                          boxInside: Container(
+                                            width: double.maxFinite,
+                                            padding: EdgeInsets.all(
+                                                paddingHorizontal * 3),
+                                            child: AppLargeText(
+                                              text:
+                                                  'Daha Hiç Ürün Eklenmemiştir.',
+                                              align: TextAlign.center,
+                                            ),
                                           ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        showAllProducts = true;
-                                      });
-                                    },
-                                    child: Container(
-                                      width: double.maxFinite,
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 10),
-                                      decoration: BoxDecoration(
-                                          color: AppTheme.contrastColor1,
-                                          borderRadius: BorderRadius.circular(
-                                              paddingHorizontal)),
-                                      child: AppText(
-                                        align: TextAlign.center,
-                                        fontWeight: FontWeight.bold,
-                                        text: 'Daha Fazlasına Gözat!',
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  )
+                                        )
                                 ],
                               ),
                             ),
@@ -581,7 +609,7 @@ class ProductOrderContainer extends StatelessWidget {
     return NetworkContainer(
       imageUrl: product.images!.length != 0
           ? product.images!.first
-          : NetworkImage('http://robolink.com.tr/products/products.png'),
+          : NetworkImage('https://dev.elektronikey.com/products/products.png'),
       child: Container(
         decoration: BoxDecoration(color: AppTheme.background.withOpacity(.6)),
         padding: EdgeInsets.all(paddingHorizontal),

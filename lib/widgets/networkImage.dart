@@ -50,25 +50,38 @@ class _NetworkContainerState extends State<NetworkContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: _isLoading
-          ? Container(
-              alignment: Alignment.center,
-              child: Container(
-                width: 50,
-                height: 50,
-                child: CircularProgressIndicator(
-                  color: AppTheme.textColor,
-                ),
-              ),
-            )
-          : Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(image: _imageProvider!, fit: widget.fit),
-                borderRadius: borderRadius,
-              ),
-              child: widget.child,
+    return AppTheme.dataSaverMode
+        ? Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AppTheme.background == AppBlackTheme.background
+                      ? AssetImage('assets/logo.png')
+                      : AppTheme.logo,
+                  fit: widget.fit),
+              borderRadius: borderRadius,
             ),
-    );
+            child: widget.child,
+          )
+        : Container(
+            child: _isLoading
+                ? Container(
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator(
+                        color: AppTheme.textColor,
+                      ),
+                    ),
+                  )
+                : Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: _imageProvider!, fit: widget.fit),
+                      borderRadius: borderRadius,
+                    ),
+                    child: widget.child,
+                  ),
+          );
   }
 }

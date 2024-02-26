@@ -71,57 +71,6 @@ class _ImagePickerAndUploaderWidgetState
             AppLargeText(
               text: 'Ürününüzün Fotoğrafları',
             ),
-            /* Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isGridview = true;
-                    });
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: isGridview
-                          ? AppTheme.contrastColor1
-                          : AppTheme.background,
-                      borderRadius: BorderRadius.horizontal(
-                        left: Radius.circular(10),
-                      ),
-                    ),
-                    child: FaIcon(
-                      FontAwesomeIcons.square,
-                      size: 16,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isGridview = false;
-                    });
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: isGridview
-                          ? AppTheme.background
-                          : AppTheme.contrastColor1,
-                      borderRadius: BorderRadius.horizontal(
-                        right: Radius.circular(10),
-                      ),
-                    ),
-                    child: FaIcon(
-                      FontAwesomeIcons.list,
-                      color: Colors.white,
-                      size: 16,
-                    ),
-                  ),
-                ),
-              ],
-            )
- */
           ],
         ),
         _selectedImages.isNotEmpty

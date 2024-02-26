@@ -7,6 +7,7 @@ import 'package:envanterimservetim/core/statics/statics_linegraph.dart';
 import 'package:envanterimservetim/screens/homepage/component/fastProcess.dart';
 import 'package:envanterimservetim/widgets/ads/adsOfApp.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
+import 'package:envanterimservetim/widgets/currencies.dart';
 import 'package:envanterimservetim/widgets/expandedPageview.dart';
 import 'package:envanterimservetim/widgets/networkImage.dart';
 import 'package:flutter/material.dart';
@@ -48,16 +49,21 @@ class HomeWelcome extends StatelessWidget {
           left: paddingHorizontal,
           right: paddingHorizontal,
           bottom: paddingHorizontal,
-          top: getPaddingScreenTopHeight() * 2 + AppBar().preferredSize.height),
+          top: AppBar().preferredSize.height +
+              getPaddingScreenTopHeight() +
+              paddingHorizontal * .5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
             padding: EdgeInsets.all(paddingHorizontal),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Currencies(),
                 Container(
+                  margin: EdgeInsets.only(top: paddingHorizontal),
                   width: 50,
                   height: 50,
                   child:
@@ -86,7 +92,7 @@ class HomeWelcome extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height * .45,
+                  height: 335,
                   child: PageView(
                     children: [
                       Container(

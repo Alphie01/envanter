@@ -16,12 +16,18 @@ class HeaderWidget extends StatelessWidget {
     required this.scaffoldKey,
     required this.updatePage,
     required this.blurOpacity,
+    this.customWidgetUpdate,
+    this.isCustom = false,
+    this.customWidget,
   });
 
   final Color headerColor;
   final Color headerIconColor;
   final double blurOpacity;
   final Function updatePage;
+  final Function? customWidgetUpdate;
+  final bool isCustom;
+  final Widget? customWidget;
 
   final GlobalKey<ScaffoldState> scaffoldKey;
 
@@ -107,67 +113,75 @@ class HeaderWidget extends StatelessWidget {
                 )
               ],
             ),
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (builder) {
-                        return Notification_Logs();
-                      },
-                    );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(right: paddingHorizontal * 2),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        FaIcon(
-                          FontAwesomeIcons.envelope,
-                          color: headerIconColor,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    if (Shop
-                        .selectedShop!.shopPermissions.shop_can_add_teammates) {
-                      updatePage(pageId: 1);
-                    } else {
-                      showAdsOfApp(context);
-                    }
-                  },
-                  child: Stack(
-                    alignment: Alignment.center,
+            isCustom
+                ? GestureDetector(
+                    onTap: () {
+                      customWidgetUpdate!();
+                    },
+                    child: customWidget,
+                  )
+                : Row(
                     children: [
-                      FaIcon(
-                        FontAwesomeIcons.user,
-                        color: headerIconColor,
-                      ),
-                      Shop.selectedShop!.shopPermissions.shop_can_add_teammates
-                          ? Transform.translate(
-                              offset: Offset(12, -12),
-                              child: Container(
-                                padding: EdgeInsets.all(7.5),
-                                decoration: BoxDecoration(
-                                    color: AppTheme.alertRed[0],
-                                    shape: BoxShape.circle),
-                                child: AppText(
-                                    text:
-                                        '${Shop.selectedShop!.waitingApprove.length}'),
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (builder) {
+                              return Notification_Logs();
+                            },
+                          );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(right: paddingHorizontal * 2),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              FaIcon(
+                                FontAwesomeIcons.envelope,
+                                color: headerIconColor,
                               ),
-                            )
-                          : Container(),
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (Shop.selectedShop!.shopPermissions
+                              .shop_can_add_teammates) {
+                            updatePage(pageId: 1);
+                          } else {
+                            showAdsOfApp(context);
+                          }
+                        },
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            FaIcon(
+                              FontAwesomeIcons.user,
+                              color: headerIconColor,
+                            ),
+                            Shop.selectedShop!.shopPermissions
+                                    .shop_can_add_teammates
+                                ? Transform.translate(
+                                    offset: Offset(12, -12),
+                                    child: Container(
+                                      padding: EdgeInsets.all(7.5),
+                                      decoration: BoxDecoration(
+                                          color: AppTheme.alertRed[0],
+                                          shape: BoxShape.circle),
+                                      child: AppText(
+                                          text:
+                                              '${Shop.selectedShop!.waitingApprove.length}'),
+                                    ),
+                                  )
+                                : Container(),
+                          ],
+                        ),
+                      ),
                     ],
-                  ),
-                ),
-              ],
-            )
+                  )
           ],
         ),
       ),

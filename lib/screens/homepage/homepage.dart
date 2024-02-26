@@ -140,6 +140,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                       BorderRadius.circular(
                                                           paddingHorizontal)),
                                               height: 250,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal:
+                                                      paddingHorizontal * 3),
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -268,6 +271,8 @@ class StorageOfCompany extends StatelessWidget {
                       color: AppTheme.background,
                       borderRadius: BorderRadius.circular(paddingHorizontal)),
                   height: 250,
+                  padding:
+                      EdgeInsets.symmetric(horizontal: paddingHorizontal * 3),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -426,7 +431,7 @@ class Product_Overview extends StatelessWidget {
               imageUrl: product.images!.length != 0
                   ? product.images!.first
                   : NetworkImage(
-                      'http://robolink.com.tr/products/products.png'),
+                      'https://dev.elektronikey.com/products/products.png'),
             ),
           ),
           Expanded(
@@ -500,12 +505,7 @@ class _PageScanBarcodeState extends State<PageScanBarcode> {
       doesntScaned = true;
       fetching = !fetching;
     });
-    String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
-      '#00FFFFFF', // Tarama ekranının arka plan rengi
-      'İptal', // İptal butonu metni
-      true, // Kamera flaşını kullanma
-      ScanMode.BARCODE, // Sadece barkodları tara
-    );
+    String barcodeScanResult = await BarcodeReader.scanBarcode();
 
     if (barcodeScanResult != '-1') {
       setState(() {
@@ -599,7 +599,7 @@ class _PageScanBarcodeState extends State<PageScanBarcode> {
                                 )
                               : const NetworkContainer(
                                   imageUrl: NetworkImage(
-                                      'http://robolink.com.tr/products/products.png'),
+                                      'https://dev.elektronikey.com/products/products.png'),
                                 ),
                         ),
                         Box_View(

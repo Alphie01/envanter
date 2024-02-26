@@ -8,6 +8,7 @@ import 'package:envanterimservetim/screens/starting/loading/components/logoConta
 import 'package:envanterimservetim/screens/starting/mail_comfimataion.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
 import 'package:envanterimservetim/widgets/box_view.dart';
+import 'package:envanterimservetim/widgets/loadingCircular.dart';
 import 'package:envanterimservetim/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -858,11 +859,8 @@ class _RegisterScreenState extends State<RegisterScreen>
                                       ),
                                     ),
                                     controlInternet
-                                        ? Container(
-                                            width: 50,
-                                            height: 50,
-                                            child: CircularProgressIndicator(),
-                                          )
+                                        ? LoadingCircular()
+                    
                                         : GestureDetector(
                                             onTap: () {
                                               setState(() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class SizeConfig {
   static late MediaQueryData _mediaQueryData;
@@ -44,3 +45,27 @@ double paddingHorizontal = 15.0;
 EdgeInsets paddingZero = EdgeInsets.zero;
 
 BorderRadius defaultRadius = BorderRadius.circular(paddingHorizontal);
+
+class BarcodeReader {
+  static Future<String> scanQRBarcode() async {
+    String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
+      '#00FFFFFF', // Tarama ekranının arka plan rengi
+      'İptal', // İptal butonu metni
+      true, // Kamera flaşını kullanma
+      ScanMode.QR, // Sadece barkodları tara
+    );
+
+    return barcodeScanResult;
+  }
+
+  static Future<String> scanBarcode() async {
+    String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
+      '#00FFFFFF', // Tarama ekranının arka plan rengi
+      'İptal', // İptal butonu metni
+      true, // Kamera flaşını kullanma
+      ScanMode.BARCODE, // Sadece barkodları tara
+    );
+
+    return barcodeScanResult;
+  }
+}

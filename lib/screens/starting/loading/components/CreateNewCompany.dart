@@ -7,6 +7,7 @@ import 'package:envanterimservetim/core/constants/theme.dart';
 import 'package:envanterimservetim/screens/starting/loading/components/logoContainer.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
 import 'package:envanterimservetim/widgets/box_view.dart';
+import 'package:envanterimservetim/widgets/loadingCircular.dart';
 import 'package:envanterimservetim/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -129,13 +130,8 @@ class _CreateNewCompanyState extends State<CreateNewCompany> {
                     physics: NeverScrollableScrollPhysics(),
                     children: [
                       isCreating
-                          ? Center(
-                              child: Container(
-                                width: 50,
-                                height: 50,
-                                child: CircularProgressIndicator(),
-                              ),
-                            )
+                          ? LoadingCircular()
+                    
                           : ListView(
                               shrinkWrap: true,
                               padding: paddingZero,

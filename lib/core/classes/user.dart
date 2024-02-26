@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:envanterimservetim/core/classes/shop.dart';
 import 'package:envanterimservetim/core/httpRequests/http.dart';
 import 'package:envanterimservetim/core/sharedPref/sharedpreferences.dart';
@@ -11,6 +13,7 @@ class User {
   String userName;
   String? token;
   String userMail;
+  int userGender;
 
   String? userPermissionLevel;
   String? userStartDate;
@@ -34,8 +37,10 @@ class User {
     this.userPassword,
     this.token,
     required this.userMail,
+    this.userGender = 0,
     this.userPermissionLevel,
     this.userStartDate,
+    this.userTC,
     this.platformId,
     this.userAdres,
     this.userStatus = UserStatus.notApproved,
@@ -46,8 +51,8 @@ class User {
     this.userBirthdate,
     this.userPThumbNail = const NetworkImage(
         'https://st3.depositphotos.com/8361896/34679/v/600/depositphotos_346793456-stock-video-beautiful-abstract-holographic-gradient-rainbow.jpg'),
-    this.userProfilePhoto =
-        const NetworkImage('https://robolink.com.tr/assets/user-avatar.png'),
+    this.userProfilePhoto = const NetworkImage(
+        'https://dev.elektronikey.com/assets/user-avatar.png'),
   });
 
   static User? userProfile;
@@ -74,10 +79,21 @@ class User {
       if (returns['kullanici']['kullanici_resim'] != null) {
         path = returns['kullanici']['kullanici_resim'];
       } else {
-        path = 'https://robolink.com.tr/assets/user-avatar.png';
+        path = 'https://dev.elektronikey.com/assets/user-avatar.png';
       }
       userProfile = _createUserParamater(returns['kullanici'], path);
       biometrics = false;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<bool> updateUser(Map<String, dynamic> data) async {
+    Map returns = await HTTP_Requests.sendPostRequest(data);
+    print(data);
+    print(returns);
+    if (returns['id'] == 0) {
       return true;
     } else {
       return false;
@@ -110,7 +126,7 @@ class User {
       if (returns['kullanici']['kullanici_resim'] != null) {
         path = returns['kullanici']['kullanici_resim'];
       } else {
-        path = 'https://robolink.com.tr/assets/user-avatar.png';
+        path = 'https://dev.elektronikey.com/assets/user-avatar.png';
       }
 
       /* List<dynamic> _platforms = returns['kullanici']['platforms']; */
@@ -119,10 +135,11 @@ class User {
       /* for (var element in _platforms) {
         _canPlatformList.add(element['kullanici_platformTokens_platformId']);
       } */
+      print(returns['kullanici']);
 
       userProfile = _createUserParamater(returns['kullanici'], path);
 
-      //setting up Shops
+      //setting up Shopsx
 
       Shop.setAttendedShops(returns['shop']);
       Shop.setInvitedShops(returns['invitedShops']);
@@ -146,7 +163,14 @@ class User {
         userProfilePhoto: NetworkImage(path),
         userPermissionLevel: returns['kullanici_yetki'],
         userStartDate: '${returns['kullanici_zaman']}',
-        platformId: _canPlatformList);
+        platformId: _canPlatformList,
+        userGender: int.parse(returns['kullanici_gender']),
+        userBirthdate: returns['kullanici_birthDate'],
+        userAdres: returns['kullanici_adres'],
+        userIl: returns['kullanici_il'],
+        userIlce: returns['kullanici_ilce'],
+        userGsm: returns['kullanici_gsm'],
+        userTC: returns['kullanici_tc']);
   }
 
   static UserStatus userStatusChecker(String status) {
@@ -181,7 +205,7 @@ class User {
       if (returns['kullanici']['kullanici_resim'] != null) {
         path = returns['kullanici']['kullanici_resim'];
       } else {
-        path = 'https://robolink.com.tr/assets/user-avatar.png';
+        path = 'https://dev.elektronikey.com/assets/user-avatar.png';
       }
 
       List<String> _canPlatformList = [];

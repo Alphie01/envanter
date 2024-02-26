@@ -7,6 +7,7 @@ import 'package:envanterimservetim/screens/homepage/component/introduce.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
 import 'package:envanterimservetim/widgets/box_view.dart';
 import 'package:envanterimservetim/widgets/headerWidget.dart';
+import 'package:envanterimservetim/widgets/loadingCircular.dart';
 import 'package:envanterimservetim/widgets/networkImage.dart';
 import 'package:envanterimservetim/widgets/textfield.dart';
 import 'package:flutter/material.dart';
@@ -378,13 +379,8 @@ class _NewTeammateState extends State<NewTeammate>
                                       ),
                                     ],
                                   )
-                                : Center(
-                                    child: Container(
-                                      height: 50,
-                                      width: 50,
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  ),
+                                : LoadingCircular()
+                    ,
                           ],
                         ),
                       ),

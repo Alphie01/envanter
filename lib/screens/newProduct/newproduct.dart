@@ -12,6 +12,7 @@ import 'package:envanterimservetim/screens/newProduct/component/shopProductAddin
 import 'package:envanterimservetim/widgets/app_text.dart';
 import 'package:envanterimservetim/widgets/box_view.dart';
 import 'package:envanterimservetim/widgets/headerWidget.dart';
+import 'package:envanterimservetim/widgets/loadingCircular.dart';
 import 'package:envanterimservetim/widgets/textfield.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -72,7 +73,7 @@ class _NewShopProductPageState extends State<NewShopProductPage>
       sizeSaleCur = '',
       sizeSale = '';
 
-  bool tekli = false, isFetch = false, isError = false;
+  bool tekli = false, isFetch = false, isError = false, isSubProducted = false;
 
   Product _newProduct = Product();
 
@@ -156,12 +157,7 @@ class _NewShopProductPageState extends State<NewShopProductPage>
   }
 
   Future<void> scanNormalBarcode() async {
-    String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
-      '#00FFFFFF', // Tarama ekranının arka plan rengi
-      'İptal', // İptal butonu metni
-      true, // Kamera flaşını kullanma
-      ScanMode.BARCODE, // Sadece barkodları tara
-    );
+    String barcodeScanResult = await BarcodeReader.scanBarcode();
 
     if (barcodeScanResult != '-1') {
       setState(() {
@@ -173,12 +169,7 @@ class _NewShopProductPageState extends State<NewShopProductPage>
   }
 
   Future<void> scanQRBarcode() async {
-    String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
-      '#00FFFFFF', // Tarama ekranının arka plan rengi
-      'İptal', // İptal butonu metni
-      true, // Kamera flaşını kullanma
-      ScanMode.QR, // Sadece barkodları tara
-    );
+    String barcodeScanResult = await BarcodeReader.scanQRBarcode();
 
     if (barcodeScanResult != '-1') {
       setState(() {
@@ -387,6 +378,998 @@ class _NewShopProductPageState extends State<NewShopProductPage>
                                     });
                                   },
                                 ),
+                                /* Box_View(
+                                  boxInside: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      AppLargeText(text: 'Ürün Bilgisi'),
+                                      AppText(text: 'text'),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  isSubProducted =
+                                                      !isSubProducted;
+                                                });
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical:
+                                                        paddingHorizontal * .5),
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal:
+                                                        paddingHorizontal * .5),
+                                                decoration: BoxDecoration(
+                                                    color: !isSubProducted
+                                                        ? AppTheme
+                                                            .contrastColor1
+                                                            .withOpacity(.6)
+                                                        : AppTheme.background
+                                                            .withOpacity(.6),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            paddingHorizontal)),
+                                                alignment: Alignment.center,
+                                                child: AppText(
+                                                  text: 'Alt Ürünü Yok',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  isSubProducted =
+                                                      !isSubProducted;
+                                                });
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical:
+                                                        paddingHorizontal * .5),
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal:
+                                                        paddingHorizontal * .5),
+                                                decoration: BoxDecoration(
+                                                    color: isSubProducted
+                                                        ? AppTheme
+                                                            .contrastColor1
+                                                            .withOpacity(.6)
+                                                        : AppTheme.background
+                                                            .withOpacity(.6),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            paddingHorizontal)),
+                                                alignment: Alignment.center,
+                                                child: AppText(
+                                                  text: 'Alt Ürünü Var',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Box_View(
+                                        horizontal: 0,
+                                        color: AppTheme.background,
+                                        boxInside: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                  bottom: paddingHorizontal),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  AppLargeText(
+                                                      text: 'Ürünün Boyutu'),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        tekli = !tekli;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      padding: EdgeInsets.all(
+                                                          paddingHorizontal /
+                                                              2),
+                                                      decoration: BoxDecoration(
+                                                          color: AppTheme
+                                                              .contrastColor1,
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  paddingHorizontal)),
+                                                      child: AppText(
+                                                        text: tekli
+                                                            ? 'Çoklu Boyut'
+                                                            : 'Tek Boyut',
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                  bottom: paddingHorizontal),
+                                              child: AppText(
+                                                text:
+                                                    'Envanter paketine sahip olduğunuz için, isterseniz aynı ürünün farklı boyutlarını oluşturabilirsiniz. Bu özellik, işletmenizin stok yönetimini daha esnek ve etkili bir şekilde yapmanıza olanak tanır. ',
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                  bottom: paddingHorizontal),
+                                              child: AppText(
+                                                text:
+                                                    'Modu değiştirmek için sağ üste tıklayarak değiştirebilirsiniz!',
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            tekli
+                                                ? Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      _listOfSizeList.isNotEmpty
+                                                          ? Box_View(
+                                                              horizontal: 0,
+                                                              color: AppTheme
+                                                                  .background,
+                                                              boxInside: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Container(
+                                                                    width: double
+                                                                        .maxFinite,
+                                                                    child:
+                                                                        AppText(
+                                                                      text:
+                                                                          'Eklediğiniz Boyutlar',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
+                                                                  ),
+                                                                  Container(
+                                                                    margin: EdgeInsets
+                                                                        .only(
+                                                                            top:
+                                                                                paddingHorizontal),
+                                                                    height: 35,
+                                                                    child: ListView
+                                                                        .builder(
+                                                                      itemCount:
+                                                                          _listOfSizeList
+                                                                              .length,
+                                                                      shrinkWrap:
+                                                                          true,
+                                                                      padding:
+                                                                          paddingZero,
+                                                                      scrollDirection:
+                                                                          Axis.horizontal,
+                                                                      itemBuilder:
+                                                                          (BuildContext context,
+                                                                              int index) {
+                                                                        return Container(
+                                                                          decoration: BoxDecoration(
+                                                                              color: AppTheme.contrastColor1,
+                                                                              borderRadius: defaultRadius),
+                                                                          alignment:
+                                                                              Alignment.center,
+                                                                          margin:
+                                                                              EdgeInsets.only(right: paddingHorizontal),
+                                                                          padding:
+                                                                              EdgeInsets.symmetric(horizontal: paddingHorizontal),
+                                                                          child:
+                                                                              AppText(text: '${_listOfSizeList[index].nameOfSize}'),
+                                                                        );
+                                                                      },
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ))
+                                                          : Container(),
+                                                      Box_View(
+                                                        horizontal: 0,
+                                                        color:
+                                                            AppTheme.background,
+                                                        boxInside: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            AppText(
+                                                              text:
+                                                                  'Boyutun İsmi',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                            Container(
+                                                              child:
+                                                                  CustomTextfield(
+                                                                controller:
+                                                                    _sizeNameController,
+                                                                hintText:
+                                                                    'Boyutun İsmi',
+                                                                onChange:
+                                                                    (news) {
+                                                                  setState(() {
+                                                                    sizeName =
+                                                                        news;
+                                                                  });
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Box_View(
+                                                        horizontal: 0,
+                                                        color:
+                                                            AppTheme.background,
+                                                        boxInside: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            AppText(
+                                                              text:
+                                                                  'Ürün Stok Kodu',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                            Container(
+                                                              child:
+                                                                  CustomTextfield(
+                                                                controller:
+                                                                    _sizeStockCodeController,
+                                                                hintText:
+                                                                    'Ürünün Stok Kodu',
+                                                                onChange:
+                                                                    (news) {
+                                                                  print(
+                                                                      sizeStockCode);
+                                                                  setState(() {
+                                                                    sizeStockCode =
+                                                                        news;
+                                                                  });
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Box_View(
+                                                        horizontal: 0,
+                                                        color:
+                                                            AppTheme.background,
+                                                        boxInside: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            AppText(
+                                                              text:
+                                                                  'Stok Sayısı',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                            Container(
+                                                              child:
+                                                                  CustomTextfield(
+                                                                controller:
+                                                                    _esizeStockController,
+                                                                hintText:
+                                                                    'Ürünün Stok Sayısı',
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .number,
+                                                                onChange:
+                                                                    (news) {
+                                                                  setState(() {
+                                                                    sizeStock =
+                                                                        news;
+                                                                  });
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Shop
+                                                              .selectedShop!
+                                                              .shopPermissions
+                                                              .shop_can_initilize_low_stok
+                                                          ? Box_View(
+                                                              horizontal: 0,
+                                                              color: AppTheme
+                                                                  .background,
+                                                              boxInside: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  AppText(
+                                                                    text:
+                                                                        'Uyarı Vermesini İstediğin Stok Sayısı',
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                                  Container(
+                                                                    child:
+                                                                        CustomTextfield(
+                                                                      controller:
+                                                                          _sizeAlertController,
+                                                                      hintText:
+                                                                          'Ürünün Uyarı Vermesini İstediğin Stok Sayısı',
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .number,
+                                                                      onChange:
+                                                                          (news) {
+                                                                        setState(
+                                                                            () {
+                                                                          sizeAlert =
+                                                                              news;
+                                                                        });
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          : Container(),
+                                                      Box_View(
+                                                        horizontal: 0,
+                                                        color:
+                                                            AppTheme.background,
+                                                        boxInside: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            AppText(
+                                                              text:
+                                                                  'Ürünün Boyutları',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                            Container(
+                                                              child:
+                                                                  CustomTextfield(
+                                                                controller:
+                                                                    _sizeDimensionsController,
+                                                                hintText:
+                                                                    'Ürünün Boyutları',
+                                                                onChange:
+                                                                    (news) {
+                                                                  setState(() {
+                                                                    sizeDimensions =
+                                                                        news;
+                                                                  });
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Box_View(
+                                                        horizontal: 0,
+                                                        color:
+                                                            AppTheme.background,
+                                                        boxInside: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            AppText(
+                                                              text:
+                                                                  'Ürün Maliyeti',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                            Container(
+                                                              child: Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                    flex: 8,
+                                                                    child:
+                                                                        Container(
+                                                                      padding: EdgeInsets.only(
+                                                                          right:
+                                                                              paddingHorizontal),
+                                                                      child:
+                                                                          CustomTextfield(
+                                                                        controller:
+                                                                            _sizeListController,
+                                                                        hintText:
+                                                                            'Ürünün Maliyeti',
+                                                                        keyboardType:
+                                                                            TextInputType.numberWithOptions(decimal: true),
+                                                                        inputFormatters: <TextInputFormatter>[
+                                                                          FilteringTextInputFormatter.allow(
+                                                                              RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                                                        ],
+                                                                        onChange:
+                                                                            (news) {
+                                                                          setState(
+                                                                              () {
+                                                                            sizeList =
+                                                                                news;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Expanded(
+                                                                    flex: 2,
+                                                                    child:
+                                                                        GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        showModalBottomSheet(
+                                                                          isScrollControlled:
+                                                                              true,
+                                                                          backgroundColor:
+                                                                              Colors.transparent,
+                                                                          context:
+                                                                              context,
+                                                                          builder:
+                                                                              (ctx) {
+                                                                            return Product_Currency(
+                                                                              title: 'Ürünün Satış Fiyatı Birimi',
+                                                                              selectedParaBirimi: currency_buy,
+                                                                              onSelect: (ParaBirimi index) {
+                                                                                setState(() {
+                                                                                  currency_buy = index;
+                                                                                  sizeListCur = index.kod;
+                                                                                });
+
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                            );
+                                                                          },
+                                                                        );
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        alignment:
+                                                                            Alignment.center,
+                                                                        padding:
+                                                                            EdgeInsets.symmetric(vertical: 15),
+                                                                        decoration:
+                                                                            BoxDecoration(color: AppTheme.firstColor.withOpacity(.3)),
+                                                                        child: AppText(
+                                                                            text:
+                                                                                currency_buy.kod),
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Box_View(
+                                                        horizontal: 0,
+                                                        color:
+                                                            AppTheme.background,
+                                                        boxInside: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            AppText(
+                                                              text:
+                                                                  'Ürün Satış Fiyatı',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                            Container(
+                                                              child: Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                    flex: 8,
+                                                                    child:
+                                                                        Container(
+                                                                      padding: EdgeInsets.only(
+                                                                          right:
+                                                                              paddingHorizontal),
+                                                                      child:
+                                                                          CustomTextfield(
+                                                                        controller:
+                                                                            _sizeSaleController,
+                                                                        hintText:
+                                                                            'Ürünün Satış Fiyatı',
+                                                                        keyboardType:
+                                                                            TextInputType.numberWithOptions(
+                                                                          decimal:
+                                                                              true,
+                                                                        ),
+                                                                        inputFormatters: <TextInputFormatter>[
+                                                                          FilteringTextInputFormatter.allow(
+                                                                              RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                                                        ],
+                                                                        onChange:
+                                                                            (news) {
+                                                                          setState(
+                                                                              () {
+                                                                            sizeSale =
+                                                                                news;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Expanded(
+                                                                    flex: 2,
+                                                                    child:
+                                                                        GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        showModalBottomSheet(
+                                                                          isScrollControlled:
+                                                                              true,
+                                                                          backgroundColor:
+                                                                              Colors.transparent,
+                                                                          context:
+                                                                              context,
+                                                                          builder:
+                                                                              (ctx) {
+                                                                            return Product_Currency(
+                                                                              title: 'Ürünün Satış Fiyatı Birimi',
+                                                                              selectedParaBirimi: currency_sell,
+                                                                              onSelect: (ParaBirimi index) {
+                                                                                setState(() {
+                                                                                  currency_sell = index;
+                                                                                  sizeSaleCur = index.kod;
+                                                                                });
+
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                            );
+                                                                          },
+                                                                        );
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        alignment:
+                                                                            Alignment.center,
+                                                                        padding:
+                                                                            EdgeInsets.symmetric(vertical: 15),
+                                                                        decoration:
+                                                                            BoxDecoration(color: AppTheme.firstColor.withOpacity(.3)),
+                                                                        child: AppText(
+                                                                            text:
+                                                                                currency_sell.kod),
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      GestureDetector(
+                                                        onTap:
+                                                            createMultipleSizeListForContent,
+                                                        child: Box_View(
+                                                          horizontal: 0,
+                                                          color: AppTheme
+                                                              .contrastColor1
+                                                              .withOpacity(.6),
+                                                          boxInside: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              AppText(
+                                                                text:
+                                                                    'Yeni Boyut Olarak Ekle',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                              FaIcon(
+                                                                FontAwesomeIcons
+                                                                    .plus,
+                                                                color: AppTheme
+                                                                    .textColor,
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )
+                                                : Column(
+                                                    children: [
+                                                      Column(
+                                                        children: [
+                                                          Box_View(
+                                                            horizontal: 0,
+                                                            color: AppTheme
+                                                                .background,
+                                                            boxInside: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                AppText(
+                                                                  text:
+                                                                      'Ürün Stok Kodu',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                                Container(
+                                                                  child:
+                                                                      CustomTextfield(
+                                                                    controller:
+                                                                        _sizeStockCodeController,
+                                                                    hintText:
+                                                                        'Ürünün Stok Kodu',
+                                                                    onChange:
+                                                                        (news) {
+                                                                      print(
+                                                                          sizeStockCode);
+                                                                      setState(
+                                                                          () {
+                                                                        sizeStockCode =
+                                                                            news;
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Box_View(
+                                                            horizontal: 0,
+                                                            color: AppTheme
+                                                                .background,
+                                                            boxInside: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                AppText(
+                                                                  text:
+                                                                      'Stok Sayısı',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                                Container(
+                                                                  child:
+                                                                      CustomTextfield(
+                                                                    controller:
+                                                                        _esizeStockController,
+                                                                    hintText:
+                                                                        'Ürünün Stok Sayısı',
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .number,
+                                                                    onChange:
+                                                                        (news) {
+                                                                      setState(
+                                                                          () {
+                                                                        sizeStock =
+                                                                            news;
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Shop
+                                                                  .selectedShop!
+                                                                  .shopPermissions
+                                                                  .shop_can_initilize_low_stok
+                                                              ? Box_View(
+                                                                  horizontal: 0,
+                                                                  color: AppTheme
+                                                                      .background,
+                                                                  boxInside:
+                                                                      Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      AppText(
+                                                                        text:
+                                                                            'Uyarı Vermesini İstediğin Stok Sayısı',
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                      ),
+                                                                      /* int.parse(sizeAlert) >
+                                                                        int.parse(
+                                                                            sizeStock)
+                                                                    ? Container(
+                                                                        padding:
+                                                                            EdgeInsets.symmetric(vertical: paddingHorizontal / 2),
+                                                                        child:
+                                                                            AppText(
+                                                                          text:
+                                                                              'Uyarı verilecek stok değeri normal stok değerinden yüksek olamaz.',
+                                                                          color:
+                                                                              AppTheme.alertRed[0],
+                                                                        ),
+                                                                      )
+                                                                    : Container(), */
+                                                                      Container(
+                                                                        child:
+                                                                            CustomTextfield(
+                                                                          controller:
+                                                                              _sizeAlertController,
+                                                                          hintText:
+                                                                              'Ürünün Uyarı Vermesini İstediğin Stok Sayısı',
+                                                                          keyboardType:
+                                                                              TextInputType.number,
+                                                                          onChange:
+                                                                              (news) {
+                                                                            setState(() {
+                                                                              sizeAlert = news;
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                )
+                                                              : Container(),
+                                                          Box_View(
+                                                            horizontal: 0,
+                                                            color: AppTheme
+                                                                .background,
+                                                            boxInside: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                AppText(
+                                                                  text:
+                                                                      'Ürünün Boyutları',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                                Container(
+                                                                  child:
+                                                                      CustomTextfield(
+                                                                    controller:
+                                                                        _sizeDimensionsController,
+                                                                    hintText:
+                                                                        'Ürünün Boyutları',
+                                                                    onChange:
+                                                                        (news) {
+                                                                      setState(
+                                                                          () {
+                                                                        sizeDimensions =
+                                                                            news;
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Box_View(
+                                                            horizontal: 0,
+                                                            color: AppTheme
+                                                                .background,
+                                                            boxInside: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                AppText(
+                                                                  text:
+                                                                      'Ürün Maliyeti',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                                Container(
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Expanded(
+                                                                        flex: 8,
+                                                                        child:
+                                                                            Container(
+                                                                          padding:
+                                                                              EdgeInsets.only(right: paddingHorizontal),
+                                                                          child:
+                                                                              CustomTextfield(
+                                                                            controller:
+                                                                                _sizeListController,
+                                                                            hintText:
+                                                                                'Ürünün Maliyeti',
+                                                                            keyboardType:
+                                                                                TextInputType.numberWithOptions(
+                                                                              decimal: true,
+                                                                            ),
+                                                                            inputFormatters: <TextInputFormatter>[
+                                                                              FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                                                            ],
+                                                                            onChange:
+                                                                                (news) {
+                                                                              setState(() {
+                                                                                sizeList = news;
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      Expanded(
+                                                                        flex: 2,
+                                                                        child:
+                                                                            GestureDetector(
+                                                                          onTap:
+                                                                              () {
+                                                                            showModalBottomSheet(
+                                                                              isScrollControlled: true,
+                                                                              backgroundColor: Colors.transparent,
+                                                                              context: context,
+                                                                              builder: (ctx) {
+                                                                                return Product_Currency(
+                                                                                  title: 'Ürünün Satış Fiyatı Birimi',
+                                                                                  selectedParaBirimi: currency_buy,
+                                                                                  onSelect: (ParaBirimi index) {
+                                                                                    setState(() {
+                                                                                      currency_buy = index;
+                                                                                      sizeListCur = index.kod;
+                                                                                    });
+
+                                                                                    Navigator.pop(context);
+                                                                                  },
+                                                                                );
+                                                                              },
+                                                                            );
+                                                                          },
+                                                                          child:
+                                                                              Container(
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            padding:
+                                                                                EdgeInsets.symmetric(vertical: 15),
+                                                                            decoration:
+                                                                                BoxDecoration(color: AppTheme.firstColor.withOpacity(.3)),
+                                                                            child:
+                                                                                AppText(text: currency_buy.kod),
+                                                                          ),
+                                                                        ),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Box_View(
+                                                            horizontal: 0,
+                                                            color: AppTheme
+                                                                .background,
+                                                            boxInside: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                AppText(
+                                                                  text:
+                                                                      'Ürün Satış Fiyatı',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                                Container(
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Expanded(
+                                                                        flex: 8,
+                                                                        child:
+                                                                            Container(
+                                                                          padding:
+                                                                              EdgeInsets.only(right: paddingHorizontal),
+                                                                          child:
+                                                                              CustomTextfield(
+                                                                            controller:
+                                                                                _sizeSaleController,
+                                                                            hintText:
+                                                                                'Ürünün Satış Fiyatı',
+                                                                            keyboardType:
+                                                                                TextInputType.numberWithOptions(
+                                                                              decimal: true,
+                                                                            ),
+                                                                            inputFormatters: <TextInputFormatter>[
+                                                                              FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))
+                                                                            ],
+                                                                            onChange:
+                                                                                (news) {
+                                                                              setState(() {
+                                                                                sizeSale = news;
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      Expanded(
+                                                                        flex: 2,
+                                                                        child:
+                                                                            GestureDetector(
+                                                                          onTap:
+                                                                              () {
+                                                                            showModalBottomSheet(
+                                                                              isScrollControlled: true,
+                                                                              backgroundColor: Colors.transparent,
+                                                                              context: context,
+                                                                              builder: (ctx) {
+                                                                                return Product_Currency(
+                                                                                  title: 'Ürünün Satış Fiyatı Birimi',
+                                                                                  selectedParaBirimi: currency_sell,
+                                                                                  onSelect: (ParaBirimi index) {
+                                                                                    setState(() {
+                                                                                      currency_sell = index;
+                                                                                      sizeSaleCur = index.kod;
+                                                                                    });
+
+                                                                                    Navigator.pop(context);
+                                                                                  },
+                                                                                );
+                                                                              },
+                                                                            );
+                                                                          },
+                                                                          child:
+                                                                              Container(
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            padding:
+                                                                                EdgeInsets.symmetric(vertical: 15),
+                                                                            decoration:
+                                                                                BoxDecoration(color: AppTheme.firstColor.withOpacity(.3)),
+                                                                            child:
+                                                                                AppText(text: currency_sell.kod),
+                                                                          ),
+                                                                        ),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ), */
                                 Box_View(
                                   boxInside: Column(
                                     crossAxisAlignment:
@@ -416,9 +1399,11 @@ class _NewShopProductPageState extends State<NewShopProductPage>
                                                         BorderRadius.circular(
                                                             paddingHorizontal)),
                                                 child: AppText(
-                                                    text: tekli
-                                                        ? 'Çoklu Boyut'
-                                                        : 'Tek Boyut', color: Colors.white,),
+                                                  text: tekli
+                                                      ? 'Çoklu Boyut'
+                                                      : 'Tek Boyut',
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             )
                                           ],
@@ -914,8 +1899,9 @@ class _NewShopProductPageState extends State<NewShopProductPage>
                                                       createMultipleSizeListForContent,
                                                   child: Box_View(
                                                     horizontal: 0,
-                                                    color:
-                                                        AppTheme.contrastColor1.withOpacity(.6),
+                                                    color: AppTheme
+                                                        .contrastColor1
+                                                        .withOpacity(.6),
                                                     boxInside: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -1372,7 +2358,8 @@ class _NewShopProductPageState extends State<NewShopProductPage>
                                         curve: Curves.easeInOut);
                                   },
                                   child: Box_View(
-                                    color: AppTheme.contrastColor1.withOpacity(.6),
+                                    color:
+                                        AppTheme.contrastColor1.withOpacity(.6),
                                     boxInside: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -1380,12 +2367,9 @@ class _NewShopProductPageState extends State<NewShopProductPage>
                                         AppText(
                                           text: 'Devam Et',
                                           fontWeight: FontWeight.bold,
-                                          
                                         ),
-                                        FaIcon(
-                                          FontAwesomeIcons.arrowRight,
-                                          color: AppTheme.textColor
-                                        )
+                                        FaIcon(FontAwesomeIcons.arrowRight,
+                                            color: AppTheme.textColor)
                                       ],
                                     ),
                                   ),
@@ -1512,13 +2496,7 @@ class _NewShopProductPageState extends State<NewShopProductPage>
                                       )
                                     : Container(),
                                 isFetch
-                                    ? Center(
-                                        child: Container(
-                                          width: 50,
-                                          height: 50,
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      )
+                                    ? LoadingCircular()
                                     : GestureDetector(
                                         onTap: createProductOnDatabase,
                                         child: Box_View(

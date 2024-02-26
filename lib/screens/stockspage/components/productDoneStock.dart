@@ -98,7 +98,7 @@ class _ProductDoneStockState extends State<ProductDoneStock> {
                                 imageUrl: widget.product.images!.length != 0
                                     ? widget.product.images!.first
                                     : NetworkImage(
-                                        'http://robolink.com.tr/products/products.png'),
+                                        'https://dev.elektronikey.com/products/products.png'),
                               ),
                             ),
                             Expanded(

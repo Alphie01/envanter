@@ -2,9 +2,11 @@ import 'package:envanterimservetim/core/classes/shop.dart';
 import 'package:envanterimservetim/core/classes/user.dart';
 import 'package:envanterimservetim/core/constants/sizeconfig.dart';
 import 'package:envanterimservetim/core/constants/theme.dart';
+import 'package:envanterimservetim/screens/settings/sub_pages/new_comany_join.dart';
 import 'package:envanterimservetim/screens/starting/loading/components/invited__shops.dart';
 import 'package:envanterimservetim/widgets/app_text.dart';
 import 'package:envanterimservetim/widgets/box_view.dart';
+import 'package:envanterimservetim/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -102,7 +104,7 @@ class _MainSettingsPageState extends State<MainSettingsPage>
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: GestureDetector(
-          onPanUpdate: (details) {},
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
           child: Stack(
             alignment: Alignment.topCenter,
             children: <Widget>[
@@ -219,6 +221,7 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                     )),
                                   )
                                 : Container(),
+                            NewCompanyJoin(),
                             Box_View(
                               boxInside: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,10 +229,8 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                   Container(
                                     padding: EdgeInsets.only(
                                         bottom: paddingHorizontal),
-                                    child: AppText(
+                                    child: AppLargeText(
                                       text: 'Kişisel Ayarlar',
-                                      fontWeight: FontWeight.bold,
-                                      size: 15,
                                     ),
                                   ),
                                   Container(
@@ -248,11 +249,21 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                   ),
                                   SettingsButton(
                                     buttonName: 'Profilimi Düzenle',
-                                    buttonOnclick: () {},
+                                    buttonOnclick: () {
+                                      widget.updatePage!(pageId: 32);
+                                    },
+                                  ),
+                                  SettingsButton(
+                                    buttonName: 'Şifreler ve Güvenlik',
+                                    buttonOnclick: () {
+                                      widget.updatePage!(pageId: 33);
+                                    },
                                   ),
                                   SettingsButton(
                                     buttonName: 'Hesap Gizliliği',
-                                    buttonOnclick: () {},
+                                    buttonOnclick: () {
+                                      widget.updatePage!(pageId: 34);
+                                    },
                                   ),
                                 ],
                               ),
@@ -268,10 +279,8 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                         Container(
                                           padding: EdgeInsets.only(
                                               bottom: paddingHorizontal),
-                                          child: AppText(
+                                          child: AppLargeText(
                                             text: 'İşletme Ayarları',
-                                            fontWeight: FontWeight.bold,
-                                            size: 15,
                                           ),
                                         ),
                                         Container(
@@ -283,11 +292,11 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                           ),
                                         ),
                                         SettingsButton(
-                                          buttonName: 'İşletme Görünürlük',
+                                          buttonName: 'İşletme Ayarlar',
                                           buttonOnclick: () {},
                                         ),
                                         SettingsButton(
-                                          buttonName: 'İşletme Ayarlar',
+                                          buttonName: 'İşletme Görünürlük',
                                           buttonOnclick: () {},
                                         ),
                                         SettingsButton(
@@ -312,17 +321,15 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                     ),
                                   )
                                 : Container(),
-                            /* Box_View(
+                            Box_View(
                               boxInside: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
                                     padding: EdgeInsets.only(
                                         bottom: paddingHorizontal),
-                                    child: AppText(
+                                    child: AppLargeText(
                                       text: 'İşletme İletişim',
-                                      fontWeight: FontWeight.bold,
-                                      size: 15,
                                     ),
                                   ),
                                   Container(
@@ -348,7 +355,7 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                 ],
                               ),
                             ),
-                            Box_View(
+                            /* Box_View(
                               boxInside: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -357,8 +364,7 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                         bottom: paddingHorizontal),
                                     child: AppText(
                                       text: 'Websitesi Ayarları',
-                                      fontWeight: FontWeight.bold,
-                                      size: 15,
+                                      
                                     ),
                                   ),
                                   Container(
@@ -396,6 +402,7 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                 ],
                               ),
                             ),
+                             */
                             Box_View(
                               boxInside: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -403,10 +410,8 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                   Container(
                                     padding: EdgeInsets.only(
                                         bottom: paddingHorizontal),
-                                    child: AppText(
+                                    child: AppLargeText(
                                       text: 'Platform Ayarları',
-                                      fontWeight: FontWeight.bold,
-                                      size: 15,
                                     ),
                                   ),
                                   Container(
@@ -433,7 +438,6 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                 ],
                               ),
                             ),
-                             */
                             Box_View(
                               boxInside: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -441,9 +445,8 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                   Container(
                                     padding: EdgeInsets.only(
                                         bottom: paddingHorizontal),
-                                    child: AppText(
+                                    child: AppLargeText(
                                       text: 'Uygulama Ayarları',
-                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   Container(
@@ -467,12 +470,54 @@ class _MainSettingsPageState extends State<MainSettingsPage>
                                     buttonOnclick: () {},
                                   ),
                                   SettingsButton(
-                                    buttonName: 'Data-Saver',
-                                    buttonOnclick: () {},
+                                    buttonName: 'Data-Saver Modu',
+                                    buttonOnclick: () {
+                                      widget.updatePage!(pageId: 44);
+                                    },
                                   ),
                                   SettingsButton(
                                     buttonName: 'Dil',
                                     buttonOnclick: () {},
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Box_View(
+                              boxInside: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        bottom: paddingHorizontal),
+                                    child: AppLargeText(
+                                      text: 'Kurumsal',
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        bottom: paddingHorizontal),
+                                    child: AppText(
+                                      text:
+                                          'Envanterim İş Hayatım uygulamasına ait her şey!',
+                                    ),
+                                  ),
+                                  SettingsButton(
+                                    buttonName: 'Hakkımızda',
+                                    buttonOnclick: () {},
+                                  ),
+                                  SettingsButton(
+                                    buttonName: 'Gizlilik Anlaşması',
+                                    buttonOnclick: () {},
+                                  ),
+                                  SettingsButton(
+                                    buttonName: 'Şartlar ve Koşullar',
+                                    buttonOnclick: () {},
+                                  ),
+                                  SettingsButton(
+                                    buttonName: 'Cookie Sözleşmesi',
+                                    buttonOnclick: () {
+                                      widget.updatePage!(pageId: 44);
+                                    },
                                   ),
                                 ],
                               ),

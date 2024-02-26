@@ -54,8 +54,6 @@ class _LoadingScreenState extends State<LoadingScreen>
 
   @override
   void initState() {
-    print('align : ${widget.isOnlyThemeChange}');
-
     localAuthentication.isDeviceSupported().then((bool isSupported) {
       setState(() {
         _isSupportedAuth = isSupported;

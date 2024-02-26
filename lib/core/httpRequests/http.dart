@@ -7,7 +7,7 @@ abstract class HTTP_Requests with Dio {
     receiveDataWhenStatusError: true,
   ));
 
-  static String _baseUrl = 'https://robolink.com.tr';
+  static String _baseUrl = 'https://dev.elektronikey.com';
 
   static Future<List> getHttp(List<String> url) async {
     String uri = _baseUrl;
@@ -25,7 +25,6 @@ abstract class HTTP_Requests with Dio {
     if (url.length == 1) {
       uri = uri + '?' + url[0];
     }
-    print(uri);
 
     try {
       Response response = await dio.get(uri);
@@ -56,7 +55,6 @@ abstract class HTTP_Requests with Dio {
         data: formData,
       );
 
-      
       if (response.statusCode == 200) {
         Update.setLastFetch(DateTime.now());
         // Yanıtın içeriğini kontrol etmek ve işlemek için gerekli adımları burada yapın
